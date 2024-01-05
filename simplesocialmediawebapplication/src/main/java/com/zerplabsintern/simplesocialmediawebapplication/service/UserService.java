@@ -4,8 +4,8 @@ import com.zerplabsintern.simplesocialmediawebapplication.entity.User;
 
 public interface UserService {
 
-    boolean save(User user);
+    User save(User user);
 
-    boolean updateUser(Long id, User user);
+    User updateUser(Long id, User user);
     
 }

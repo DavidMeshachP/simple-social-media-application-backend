@@ -28,11 +28,11 @@ public class User {
     @OneToMany(mappedBy = "fUser")
     private List<Friend> friends;
 
-    @OneToMany(mappedBy = "pUser")
+    @OneToMany(mappedBy = "userId")
     private List<Post> posts;
 
     @OneToMany(mappedBy = "lUser")
-    private List<Like> likes;
+    private List<Likes> likes;
 
     @OneToMany(mappedBy = "cUser")
     private List<Comment> comments;
@@ -41,26 +41,29 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_name")
+    @Column(name = "user_name", nullable = false)
     private String name;
 
-    @Column(name = "email_id", unique = true, length = 40)
+    @Column(name = "email_id", unique = true, length = 40, nullable = false)
     private String emailId;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "gender")
-    private String gender;
+    @Column(name = "gender", nullable = false)
+    private Gender gender;
 
-    @Column(name = "age")
+    @Column(name = "age", nullable = false)
     private String age;
 
     @Column(name = "bio" )
     private String bio;
 
-    @Column(name = "password", length = 200)
+    @Column(name = "password", length = 200, nullable = false)
     private String password;
 
-    @Column(name = "created_on")
+    @Column(name = "image")
+    private String image;
+    
+    @Column(name = "created_on", nullable = false)
     @CreationTimestamp
     private LocalDateTime createdOn;
 
@@ -68,12 +71,17 @@ public class User {
     @UpdateTimestamp
     private LocalDateTime modifiedOn;
 
+
     public User() {
 
     }
 
-    public User(Long id, String name, String emailId, String gender, String age, String bio, String password,
+    public User(List<Friend> friends, List<Post> posts, List<Likes> likes, List<Comment> comments, Long id, String name, String emailId, Gender gender, String age, String bio, String password, String image,
             LocalDateTime createdOn, LocalDateTime modifiedOn) {
+        this.friends = friends;
+        this.posts = posts;
+        this.likes = likes;
+        this.comments = comments;
         this.id = id;
         this.name = name;
         this.emailId = emailId;
@@ -81,6 +89,7 @@ public class User {
         this.age = age;
         this.bio = bio;
         this.password = password;
+        this.image = image;
         this.createdOn = createdOn;
         this.modifiedOn = modifiedOn;
     }
@@ -109,11 +118,11 @@ public class User {
         this.emailId = emailId;
     }
 
-    public String getGender() {
+    public Gender getGender() {
         return gender;
     }
     
-    public void setGender(String gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
 
@@ -139,7 +148,7 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
+    }   
 
     public LocalDateTime getCreatedOn() {
         return createdOn;
@@ -155,6 +164,14 @@ public class User {
 
     public void setModifiedOn(LocalDateTime modifiedOn) {
         this.modifiedOn = modifiedOn;
+    }
+    
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
     
 

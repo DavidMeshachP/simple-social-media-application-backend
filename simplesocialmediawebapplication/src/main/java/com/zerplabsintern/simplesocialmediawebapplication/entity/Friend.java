@@ -34,15 +34,15 @@ public class Friend {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_id")
-    private int userId;
+    // @Column(name = "user_id")
+    // private int userId;
 
     @Column(name = "friend_id")
     private int friendId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private String status;
+    private Status status;
 
     @CreationTimestamp
     @Column(name = "created")

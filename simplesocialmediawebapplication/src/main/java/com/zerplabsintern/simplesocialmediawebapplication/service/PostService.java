@@ -1,5 +1,9 @@
 package com.zerplabsintern.simplesocialmediawebapplication.service;
 
-public class PostService {
+import com.zerplabsintern.simplesocialmediawebapplication.entity.Post;
+
+public interface PostService {
+
+    Post save(Post post);
     
 }

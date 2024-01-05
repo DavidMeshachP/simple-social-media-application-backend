@@ -18,18 +18,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean save(User user) {
-        try {
-            userRepository.save(user);
-        } catch (Exception e) {
-            return false;
-        }
+    public User save(User user) {
+        userRepository.save(user);
         
-        return true;
+        return userRepository.getReferenceById(user.getId());
     }
 
     @Override
-    public boolean updateUser(Long id, User user) {
+    public User updateUser(Long id, User user) {
         try {
 
             if (userRepository.findById(id).isPresent()) {
@@ -38,14 +34,14 @@ public class UserServiceImpl implements UserService {
 
             }
             else {
-                return false;
+                return null;
             }
 
         }
         catch (Exception e) {
-            return false;
+            return null;
         }
-        return true;
+        return userRepository.getReferenceById(id);
     }
      
 }
