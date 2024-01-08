@@ -63,7 +63,7 @@ public class User {
     @Column(name = "image")
     private String image;
     
-    @Column(name = "created_on", nullable = false)
+    @Column(name = "created_on", nullable = false, updatable = false)
     @CreationTimestamp
     private LocalDateTime createdOn;
 

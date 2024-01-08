@@ -28,17 +28,11 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // @Column(name = "post_id")
-    // private int postId;
-
-    // @Column(name = "user_id")
-    // private int userId;
-
     @Column( name = "comment")
     private String comments;
 
     @CreationTimestamp
-    @Column(name = "created")
+    @Column(name = "created", nullable = false, updatable = false)
     private LocalDateTime created;
 
     @UpdateTimestamp

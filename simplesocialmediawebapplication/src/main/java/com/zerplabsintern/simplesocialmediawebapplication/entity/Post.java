@@ -47,7 +47,7 @@ public class Post {
     private Mode mode;
 
     @CreationTimestamp
-    @Column(name = "created")
+    @Column(name = "created", updatable = false)
     private LocalDateTime created;
 
     @UpdateTimestamp

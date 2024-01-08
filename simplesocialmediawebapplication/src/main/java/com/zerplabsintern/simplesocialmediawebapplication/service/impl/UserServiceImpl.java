@@ -1,5 +1,7 @@
 package com.zerplabsintern.simplesocialmediawebapplication.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,5 +45,42 @@ public class UserServiceImpl implements UserService {
         }
         return userRepository.getReferenceById(id);
     }
+
+    @Override
+    public User deleteUser(Long id) {
+        
+        try {
+
+            if (userRepository.findById(id).isPresent()) {
+
+                userRepository.deleteById(id);
+
+            }
+            else {
+                return null;
+            }
+            
+        } catch (Exception e) {
+            return null;
+        }
+
+        return null;
+    }
+
+    @Override
+    public User getUser(Long id) {
+        
+        if(userRepository.findById(id).isPresent()){
+            return userRepository.getReferenceById(id);
+        }
+        else{
+            return null;
+        }
+    }
+
+    @Override
+    public List<User> getAllUser(String name) {
+        return userRepository.findByName(name);
+    } 
      
 }

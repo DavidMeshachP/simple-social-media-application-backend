@@ -34,9 +34,6 @@ public class Friend {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // @Column(name = "user_id")
-    // private int userId;
-
     @Column(name = "friend_id")
     private int friendId;
 
@@ -45,7 +42,7 @@ public class Friend {
     private Status status;
 
     @CreationTimestamp
-    @Column(name = "created")
+    @Column(name = "created", nullable = false, updatable = false)
     private LocalDateTime created;
 
     @UpdateTimestamp
