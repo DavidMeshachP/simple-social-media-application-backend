@@ -6,10 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.zerplabsintern.simplesocialmediawebapplication.entity.Likes;
+import com.zerplabsintern.simplesocialmediawebapplication.entity.Post;
+import com.zerplabsintern.simplesocialmediawebapplication.entity.User;
+import com.zerplabsintern.simplesocialmediawebapplication.likeDto.LikeDto;
 import com.zerplabsintern.simplesocialmediawebapplication.repository.LikeRepository;
 import com.zerplabsintern.simplesocialmediawebapplication.repository.PostRepository;
 import com.zerplabsintern.simplesocialmediawebapplication.repository.UserRepository;
 import com.zerplabsintern.simplesocialmediawebapplication.service.LikeService;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class LikeServiceImpl implements LikeService {
@@ -24,12 +29,14 @@ public class LikeServiceImpl implements LikeService {
     private UserRepository userRepository;
 
     @Override
-    public Likes addLike(Likes like) {
+    public Likes addLike(LikeDto likeDto) {
         try {
             Likes newLike = new Likes();
-            newLike.setId(like.getId());
-            newLike.setlPost(postRepository.getReferenceById(like.getlPost().getId()));
-            newLike.setlUser(userRepository.getReferenceById(like.getlUser().getId()));
+            newLike.setId(likeDto.getId());
+            User user = userRepository.findById(likeDto.getUserId()).orElseThrow(() -> new EntityNotFoundException("User not found"));
+            Post post = postRepository.findById(likeDto.getPostId()).orElseThrow(() -> new EntityNotFoundException("Post not found"));
+            newLike.setlPost(post);
+            newLike.setlUser(user);
             return likeRepository.save(newLike);
         } catch (Exception e) {
             return null;

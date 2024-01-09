@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zerplabsintern.simplesocialmediawebapplication.entity.Likes;
+import com.zerplabsintern.simplesocialmediawebapplication.likeDto.LikeDto;
 import com.zerplabsintern.simplesocialmediawebapplication.repository.LikeRepository;
 import com.zerplabsintern.simplesocialmediawebapplication.service.LikeService;
 
@@ -47,9 +47,9 @@ public class LikeController {
     }
 
     @PostMapping("/likes")
-    public ResponseEntity<?> addLike(@RequestBody Likes like) {
+    public ResponseEntity<?> addLike(@RequestBody LikeDto likeDto) {
         try {
-            return new ResponseEntity<>(likeService.addLike(like),HttpStatus.OK);
+            return new ResponseEntity<>(likeService.addLike(likeDto),HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("some error ",HttpStatus.BAD_REQUEST);
         }
