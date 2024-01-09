@@ -29,7 +29,7 @@ public class Comment {
     private Long id;
 
     @Column( name = "comment")
-    private String comments;
+    private String comment;
 
     @CreationTimestamp
     @Column(name = "created", nullable = false, updatable = false)
@@ -43,11 +43,11 @@ public class Comment {
 
     }
 
-    public Comment(User cUser, Post cPost, Long id, String comments, LocalDateTime created, LocalDateTime modified) {
+    public Comment(User cUser, Post cPost, Long id, String comment, LocalDateTime created, LocalDateTime modified) {
         this.cUser = cUser;
         this.cPost = cPost;
         this.id = id;
-        this.comments = comments;
+        this.comment = comment;
         this.created = created;
         this.modified = modified;
     }
@@ -76,12 +76,12 @@ public class Comment {
         this.id = id;
     }
 
-    public String getComments() {
-        return comments;
+    public String getComment() {
+        return comment;
     }
 
-    public void setComments(String comments) {
-        this.comments = comments;
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public LocalDateTime getCreated() {

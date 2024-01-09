@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.zerplabsintern.simplesocialmediawebapplication.dto.FriendDto;
 import com.zerplabsintern.simplesocialmediawebapplication.entity.Friend;
-import com.zerplabsintern.simplesocialmediawebapplication.likeDto.FriendDto;
 import com.zerplabsintern.simplesocialmediawebapplication.service.FriendService;
 
 @RestController
@@ -20,8 +20,8 @@ public class FriendController {
     @Autowired
     private FriendService friendService;
 
-    @Autowired 
-    private FriendDto friendDto;
+    // @Autowired 
+    // private FriendDto friendDto;
 
     @GetMapping("/friend/{id}")
     public ResponseEntity<?> getFriends(@PathVariable Long id) {
@@ -42,7 +42,7 @@ public class FriendController {
     }
 
     @DeleteMapping("/friend")
-    public ResponseEntity<?> removeFriend(@RequestBody Friend friend) {
+    public ResponseEntity<?> removeFriend(@RequestBody FriendDto friendDto) {
         try {
             return new ResponseEntity<>(friendService.deleteFriends(friendDto.getUserId(),friendDto.getFriendId()),HttpStatus.OK);
         } catch (Exception e) {

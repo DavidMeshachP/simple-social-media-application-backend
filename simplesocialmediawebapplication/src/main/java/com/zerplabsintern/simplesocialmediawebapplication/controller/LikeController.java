@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zerplabsintern.simplesocialmediawebapplication.likeDto.LikeDto;
+import com.zerplabsintern.simplesocialmediawebapplication.dto.LikeDto;
 import com.zerplabsintern.simplesocialmediawebapplication.repository.LikeRepository;
 import com.zerplabsintern.simplesocialmediawebapplication.service.LikeService;
 

@@ -5,10 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.zerplabsintern.simplesocialmediawebapplication.dto.CommentDto;
 import com.zerplabsintern.simplesocialmediawebapplication.entity.Comment;
 import com.zerplabsintern.simplesocialmediawebapplication.entity.Post;
 import com.zerplabsintern.simplesocialmediawebapplication.entity.User;
-import com.zerplabsintern.simplesocialmediawebapplication.likeDto.CommentDto;
 import com.zerplabsintern.simplesocialmediawebapplication.repository.CommentRepository;
 import com.zerplabsintern.simplesocialmediawebapplication.repository.PostRepository;
 import com.zerplabsintern.simplesocialmediawebapplication.repository.UserRepository;
@@ -33,13 +33,13 @@ public class CommentServiceImpl implements CommentService {
         try {
             Comment newComment = new Comment();
             newComment.setId(commentDto.getId());
-            newComment.setComments(commentDto.getComment());
+            newComment.setComment(commentDto.getComment());
             User user = userRepository.findById(commentDto.getId()).orElseThrow(() -> new EntityNotFoundException("User not found"));
             Post post = postRepository.findById(commentDto.getId()).orElseThrow(() -> new EntityNotFoundException("Post not found"));
             newComment.setcUser(user);
             newComment.setcPost(post);
-            newComment.setComments(commentDto.getComment());
-            return commentRepository.save(newComment);
+            commentRepository.save(newComment);
+            return newComment;
         } catch (Exception e) {
             return null;
         }

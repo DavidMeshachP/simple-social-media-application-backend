@@ -1,16 +1,15 @@
 package com.zerplabsintern.simplesocialmediawebapplication.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.zerplabsintern.simplesocialmediawebapplication.dto.LikeDto;
 import com.zerplabsintern.simplesocialmediawebapplication.entity.Likes;
 import com.zerplabsintern.simplesocialmediawebapplication.entity.Post;
 import com.zerplabsintern.simplesocialmediawebapplication.entity.User;
-import com.zerplabsintern.simplesocialmediawebapplication.likeDto.LikeDto;
 import com.zerplabsintern.simplesocialmediawebapplication.repository.LikeRepository;
 import com.zerplabsintern.simplesocialmediawebapplication.repository.PostRepository;
 import com.zerplabsintern.simplesocialmediawebapplication.repository.UserRepository;
@@ -31,7 +30,7 @@ public class LikeServiceImpl implements LikeService {
     private UserRepository userRepository;
 
     @Override
-    public ResponseEntity<?> addLike(LikeDto likeDto) {
+    public LikeDto addLike(LikeDto likeDto) {
         try {
             Likes newLike = new Likes();
             newLike.setId(likeDto.getId());
@@ -40,11 +39,8 @@ public class LikeServiceImpl implements LikeService {
             newLike.setlPost(post);
             newLike.setlUser(user);
             likeRepository.save(newLike);
-            try {
-                return new ResponseEntity<>(likeRepository.getReferenceById(newLike.getId()),HttpStatus.OK);
-            } catch (Exception e) {
-                return new ResponseEntity<>("some error",HttpStatus.INTERNAL_SERVER_ERROR);
-            }
+
+            return likeDto;
             
         } catch (Exception e) {
             return null;
@@ -52,10 +48,21 @@ public class LikeServiceImpl implements LikeService {
     }
 
     @Override
-    public List<Likes> getLike(Long id) {
+    public List<LikeDto> getLike(Long id) {
         try {
-            if(likeRepository.findById(id).isPresent()){
-                return likeRepository.findLikesBylPost(postRepository.getReferenceById(id));
+            if(likeRepository.existsBylPostId(id)){
+                List<LikeDto> likeDtos = new ArrayList<>();
+                List<Likes> like = likeRepository.findLikesBylPost(postRepository.getReferenceById(id));
+                for(Likes likes : like ) {
+                    LikeDto likeDto = new LikeDto();
+
+                    likeDto.setId(likes.getId());
+                    likeDto.setPostId(likes.getlPost().getId());
+                    likeDto.setUserId(likes.getlUser().getId());
+
+                    likeDtos.add(likeDto);
+                }
+                return likeDtos;
             }
             else{
                 return null;
@@ -69,7 +76,7 @@ public class LikeServiceImpl implements LikeService {
     public boolean removeLike(Likes like) {
         try {
             if(likeRepository.findById(like.getId()).isPresent()){
-                likeRepository.delete(like);
+                likeRepository.deleteById(like.getId());
                 return true;
             }
             else{

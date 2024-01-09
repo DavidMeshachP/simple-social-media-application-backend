@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.zerplabsintern.simplesocialmediawebapplication.dto.CommentDto;
 import com.zerplabsintern.simplesocialmediawebapplication.entity.Comment;
-import com.zerplabsintern.simplesocialmediawebapplication.likeDto.CommentDto;
 import com.zerplabsintern.simplesocialmediawebapplication.service.CommentService;
 
 @RestController

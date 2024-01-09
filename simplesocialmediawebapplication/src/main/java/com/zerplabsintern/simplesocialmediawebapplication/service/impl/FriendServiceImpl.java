@@ -28,7 +28,7 @@ public class FriendServiceImpl implements FriendService {
     public boolean deleteFriends(Long userId, Long friendId) {
         try {
             if(friendRepository.existsByfUser_Id(userId)){
-                friendRepository.deleteById(friendRepository.findFriendIdByfUser_Id(userId));
+                friendRepository.deleteById(friendRepository.findFriendIdByfUser_Id(userId).getId());
                 return true;
             }
             else{

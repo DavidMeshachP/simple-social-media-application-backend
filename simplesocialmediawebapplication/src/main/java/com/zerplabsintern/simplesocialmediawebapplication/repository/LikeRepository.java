@@ -10,5 +10,7 @@ import com.zerplabsintern.simplesocialmediawebapplication.entity.Post;
 public interface LikeRepository extends JpaRepository<Likes, Long> {
 
     List<Likes> findLikesBylPost(Post lPost);
+
+    boolean existsBylPostId(Long id);
     
 }

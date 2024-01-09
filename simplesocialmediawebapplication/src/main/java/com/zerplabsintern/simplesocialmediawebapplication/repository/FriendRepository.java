@@ -12,6 +12,6 @@ public interface FriendRepository extends JpaRepository<Friend, Long > {
 
     boolean existsByfUser_Id(Long userId);
 
-    Long findFriendIdByfUser_Id(Long userId);
+    Friend findFriendIdByfUser_Id(Long userId);
     
 }

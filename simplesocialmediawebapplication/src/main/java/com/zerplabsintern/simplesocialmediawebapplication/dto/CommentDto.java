@@ -1,4 +1,4 @@
-package com.zerplabsintern.simplesocialmediawebapplication.likeDto;
+package com.zerplabsintern.simplesocialmediawebapplication.dto;
 
 import org.springframework.stereotype.Component;
 
