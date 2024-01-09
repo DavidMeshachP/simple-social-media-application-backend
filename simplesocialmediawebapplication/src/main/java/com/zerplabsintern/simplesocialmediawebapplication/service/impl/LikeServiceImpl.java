@@ -3,6 +3,8 @@ package com.zerplabsintern.simplesocialmediawebapplication.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.zerplabsintern.simplesocialmediawebapplication.entity.Likes;
@@ -29,7 +31,7 @@ public class LikeServiceImpl implements LikeService {
     private UserRepository userRepository;
 
     @Override
-    public Likes addLike(LikeDto likeDto) {
+    public ResponseEntity<?> addLike(LikeDto likeDto) {
         try {
             Likes newLike = new Likes();
             newLike.setId(likeDto.getId());
@@ -37,7 +39,13 @@ public class LikeServiceImpl implements LikeService {
             Post post = postRepository.findById(likeDto.getPostId()).orElseThrow(() -> new EntityNotFoundException("Post not found"));
             newLike.setlPost(post);
             newLike.setlUser(user);
-            return likeRepository.save(newLike);
+            likeRepository.save(newLike);
+            try {
+                return new ResponseEntity<>(likeRepository.getReferenceById(newLike.getId()),HttpStatus.OK);
+            } catch (Exception e) {
+                return new ResponseEntity<>("some error",HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+            
         } catch (Exception e) {
             return null;
         }

@@ -8,6 +8,10 @@ import com.zerplabsintern.simplesocialmediawebapplication.entity.Friend;
 
 public interface FriendRepository extends JpaRepository<Friend, Long > {
 
-    List<Friend> getFriendsByUserId(Long id);
+    List<Friend> findByfUser_Id(Long id);
+
+    boolean existsByfUser_Id(Long userId);
+
+    Long findFriendIdByfUser_Id(Long userId);
     
 }

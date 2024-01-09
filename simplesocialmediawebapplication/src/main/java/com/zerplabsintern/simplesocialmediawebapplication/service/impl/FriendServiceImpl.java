@@ -26,14 +26,23 @@ public class FriendServiceImpl implements FriendService {
 
     @Override
     public boolean deleteFriends(Long userId, Long friendId) {
-        if()
-        return false;
+        try {
+            if(friendRepository.existsByfUser_Id(userId)){
+                friendRepository.deleteById(friendRepository.findFriendIdByfUser_Id(userId));
+                return true;
+            }
+            else{
+                return false;
+            }
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     @Override
     public List<Friend> getFriends(Long id) {
         try {
-            return friendRepository.getFriendsByUserId(id);
+            return friendRepository.findByfUser_Id(id);
         } catch (Exception e) {
             return null;
         }

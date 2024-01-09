@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.zerplabsintern.simplesocialmediawebapplication.entity.Comment;
+import com.zerplabsintern.simplesocialmediawebapplication.likeDto.CommentDto;
 import com.zerplabsintern.simplesocialmediawebapplication.service.CommentService;
 
 @RestController
@@ -21,9 +22,9 @@ public class CommentController {
     private CommentService commentService;
 
     @PostMapping("/comment")
-    public ResponseEntity<?> addComment(@RequestBody Comment comment) {
+    public ResponseEntity<?> addComment(@RequestBody CommentDto commentDto) {
         try {
-            return new ResponseEntity<>(commentService.addComment(comment),HttpStatus.OK);
+            return new ResponseEntity<>(commentService.addComment(commentDto),HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("check data",HttpStatus.OK);
         }

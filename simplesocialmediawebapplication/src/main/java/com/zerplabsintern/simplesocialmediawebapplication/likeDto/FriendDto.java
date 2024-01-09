@@ -1,5 +1,8 @@
 package com.zerplabsintern.simplesocialmediawebapplication.likeDto;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class FriendDto {
 
     private Long userId;

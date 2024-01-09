@@ -38,5 +38,68 @@ public class Comment {
     @UpdateTimestamp
     @Column(name = "modified")
     private LocalDateTime modified;
+
+    public Comment() {
+
+    }
+
+    public Comment(User cUser, Post cPost, Long id, String comments, LocalDateTime created, LocalDateTime modified) {
+        this.cUser = cUser;
+        this.cPost = cPost;
+        this.id = id;
+        this.comments = comments;
+        this.created = created;
+        this.modified = modified;
+    }
+
+    public User getcUser() {
+        return cUser;
+    }
+
+    public void setcUser(User cUser) {
+        this.cUser = cUser;
+    }
+
+    public Post getcPost() {
+        return cPost;
+    }
+
+    public void setcPost(Post cPost) {
+        this.cPost = cPost;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
+    public LocalDateTime getCreated() {
+        return created;
+    }
+
+    public void setCreated(LocalDateTime created) {
+        this.created = created;
+    }
+
+    public LocalDateTime getModified() {
+        return modified;
+    }
+
+    public void setModified(LocalDateTime modified) {
+        this.modified = modified;
+    }
+
+    
     
 }

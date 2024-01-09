@@ -8,7 +8,7 @@ import com.zerplabsintern.simplesocialmediawebapplication.entity.Comment;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
-    List<Comment> findCommentByPostId(Long id);
+    List<Comment> findBycPost_Id(Long postId);
 
     
 } 

@@ -48,5 +48,68 @@ public class Friend {
     @UpdateTimestamp
     @Column(name = "modified")
     private LocalDateTime modified;
+
+    public Friend() {
+
+    }
+
+    public Friend(User fUser, Long id, int friendId, Status status, LocalDateTime created, LocalDateTime modified) {
+        this.fUser = fUser;
+        this.id = id;
+        this.friendId = friendId;
+        this.status = status;
+        this.created = created;
+        this.modified = modified;
+    }
+
+    public User getfUser() {
+        return fUser;
+    }
+
+    public void setfUser(User fUser) {
+        this.fUser = fUser;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public int getFriendId() {
+        return friendId;
+    }
+
+    public void setFriendId(int friendId) {
+        this.friendId = friendId;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public LocalDateTime getCreated() {
+        return created;
+    }
+
+    public void setCreated(LocalDateTime created) {
+        this.created = created;
+    }
+
+    public LocalDateTime getModified() {
+        return modified;
+    }
+
+    public void setModified(LocalDateTime modified) {
+        this.modified = modified;
+    }
+
+    
     
 }
