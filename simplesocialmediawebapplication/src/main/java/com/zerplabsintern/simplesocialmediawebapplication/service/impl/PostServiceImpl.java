@@ -57,7 +57,7 @@ public class PostServiceImpl implements PostService {
 
         postRepository.save(newPost);
 
-        return null;
+        return newPost;
 
     }
 
