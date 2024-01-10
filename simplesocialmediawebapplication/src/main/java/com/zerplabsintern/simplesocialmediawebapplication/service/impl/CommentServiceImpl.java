@@ -1,5 +1,6 @@
 package com.zerplabsintern.simplesocialmediawebapplication.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class CommentServiceImpl implements CommentService {
     private PostRepository postRepository;
 
     @Override
-    public Comment addComment(CommentDto commentDto) {
+    public CommentDto addComment(CommentDto commentDto) {
         try {
             Comment newComment = new Comment();
             newComment.setId(commentDto.getId());
@@ -39,7 +40,7 @@ public class CommentServiceImpl implements CommentService {
             newComment.setcUser(user);
             newComment.setcPost(post);
             commentRepository.save(newComment);
-            return newComment;
+            return commentDto;
         } catch (Exception e) {
             return null;
         }
@@ -62,18 +63,44 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Comment updateComment(Comment comment) {
+    public CommentDto updateComment(Comment comment) {
         try {
-            return commentRepository.save(comment);
+            Comment newComment = commentRepository.save(comment);
+
+            CommentDto commentDto = new CommentDto();
+
+            commentDto.setId(newComment.getId());
+            commentDto.setComment(newComment.getComment());
+            commentDto.setPostId(newComment.getcPost().getId());
+            commentDto.setUserId(newComment.getcUser().getId());
+
+            return commentDto;
+
         } catch (Exception e) {
             return null;
         }
     }
 
     @Override
-    public List<Comment> getAllComment(Long id) {
+    public List<CommentDto> getAllComment(Long id) {
         try {
-            return commentRepository.findBycPost_Id(id);
+            List<Comment> comment = commentRepository.findBycPost_Id(id);
+
+            List<CommentDto> commentDtos = new ArrayList<>();
+
+            for (Comment c : comment) {
+
+                CommentDto commentDto = new CommentDto();
+
+                commentDto.setId(c.getId());
+                commentDto.setPostId(c.getcPost().getId());
+                commentDto.setUserId(c.getcUser().getId());
+                commentDto.setComment(c.getComment());
+
+                commentDtos.add(commentDto);
+            }
+
+            return commentDtos;
         } catch (Exception e) {
             return null;
         }

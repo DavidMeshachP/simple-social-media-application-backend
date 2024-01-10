@@ -7,11 +7,11 @@ import com.zerplabsintern.simplesocialmediawebapplication.entity.Comment;
 
 public interface CommentService {
 
-    Comment addComment(CommentDto commentDto);
+    CommentDto addComment(CommentDto commentDto);
 
-    Comment updateComment(Comment comment);
+    CommentDto updateComment(Comment comment);
 
     boolean removeComment(Long id);
 
-    List<Comment> getAllComment(Long id);    
+    List<CommentDto> getAllComment(Long id);    
 }

@@ -20,9 +20,6 @@ public class FriendController {
     @Autowired
     private FriendService friendService;
 
-    // @Autowired 
-    // private FriendDto friendDto;
-
     @GetMapping("/friend/{id}")
     public ResponseEntity<?> getFriends(@PathVariable Long id) {
         try {

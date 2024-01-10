@@ -18,7 +18,7 @@ public class FriendDto {
 
     private Long userId;
 
-    private Long FriendId;
+    private Long friendId;
 
     @Enumerated(EnumType.STRING)
     private String status;
@@ -32,7 +32,7 @@ public class FriendDto {
     public FriendDto(Long id, Long userId, Long friendId, String status) {
         this.id = id;
         this.userId = userId;
-        FriendId = friendId;
+        this.friendId = friendId;
         this.status = status;
     }
 
@@ -45,11 +45,11 @@ public class FriendDto {
     }
 
     public Long getFriendId() {
-        return FriendId;
+        return friendId;
     }
 
     public void setFriendId(Long friendId) {
-        FriendId = friendId;
+        this.friendId = friendId;
     }
 
     public Long getId() {
