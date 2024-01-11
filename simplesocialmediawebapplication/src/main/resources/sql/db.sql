@@ -97,7 +97,7 @@ select *
 -- friend
 
 insert into friend(user_id, friend_id, status)
-values(1, 2, "accepted");
+values(1, 2, "Accepted");
 
 select friend_id from friend where user_id = 1;
 

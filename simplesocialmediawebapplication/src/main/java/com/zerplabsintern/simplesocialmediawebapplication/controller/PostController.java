@@ -20,7 +20,7 @@ public class PostController {
     @Autowired
     private PostService postService;
 
-    @PostMapping("/post")
+    @PostMapping("/posts")
     public ResponseEntity<?> createPost(@RequestBody Post post) {
 
         try {
@@ -31,7 +31,7 @@ public class PostController {
 
     }
 
-    @PutMapping("/post/{id}")
+    @PutMapping("/posts/{id}")
     public ResponseEntity<?> updatePost(@PathVariable Long id, @RequestBody Post post) {
 
         try {
@@ -44,7 +44,7 @@ public class PostController {
 
     }
     
-    @DeleteMapping("/post/{id}")
+    @DeleteMapping("/posts/{id}")
     public ResponseEntity<?> deletePost(@PathVariable Long id){
 
         try {
@@ -55,7 +55,7 @@ public class PostController {
 
     }
 
-    @GetMapping("/post/{id}")
+    @GetMapping("/posts/{id}")
     public ResponseEntity<?> getPostById(@PathVariable Long id) {
 
         try {
@@ -66,7 +66,7 @@ public class PostController {
 
     }
 
-    @GetMapping("/getAllPost/{id}")
+    @GetMapping("/user-posts/{userId}")
     public ResponseEntity<?> getAllPostByUserId(@PathVariable Long id) {
 
         try {

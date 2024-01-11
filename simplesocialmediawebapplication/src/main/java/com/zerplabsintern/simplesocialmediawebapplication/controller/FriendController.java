@@ -13,12 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.zerplabsintern.simplesocialmediawebapplication.dto.FriendDto;
 import com.zerplabsintern.simplesocialmediawebapplication.entity.Friend;
 import com.zerplabsintern.simplesocialmediawebapplication.service.FriendService;
+import com.zerplabsintern.simplesocialmediawebapplication.service.impl.FriendServiceImpl;
 
 @RestController
 public class FriendController {
 
     @Autowired
-    private FriendService friendService;
+    private FriendService friendService = new FriendServiceImpl();
 
     @GetMapping("/friend/{id}")
     public ResponseEntity<?> getFriends(@PathVariable Long id) {
