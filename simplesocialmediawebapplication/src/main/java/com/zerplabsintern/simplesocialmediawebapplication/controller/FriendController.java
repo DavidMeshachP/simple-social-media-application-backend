@@ -21,7 +21,7 @@ public class FriendController {
     @Autowired
     private FriendService friendService = new FriendServiceImpl();
 
-    @GetMapping("/friend/{id}")
+    @GetMapping("/friends/{id}")
     public ResponseEntity<?> getFriends(@PathVariable Long id) {
         try {
             return new ResponseEntity<>(friendService.getFriends(id),HttpStatus.OK);
@@ -30,7 +30,7 @@ public class FriendController {
         }
     }
 
-    @PostMapping("/friend")
+    @PostMapping("/friends")
     public ResponseEntity<?> addFriend(@RequestBody Friend friend) {
         try {
             return new ResponseEntity<>(friendService.addFriend(friend),HttpStatus.OK);
@@ -39,7 +39,7 @@ public class FriendController {
         }
     }
 
-    @DeleteMapping("/friend")
+    @DeleteMapping("/friends")
     public ResponseEntity<?> removeFriend(@RequestBody FriendDto friendDto) {
         try {
             return new ResponseEntity<>(friendService.deleteFriends(friendDto.getUserId(),friendDto.getFriendId()),HttpStatus.OK);

@@ -1,7 +1,5 @@
 package com.zerplabsintern.simplesocialmediawebapplication.dto;
 
-import org.springframework.stereotype.Component;
-
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 
@@ -11,7 +9,6 @@ enum Status {
     Pending
 }
 
-@Component
 public class FriendDto {
 
     private Long id;

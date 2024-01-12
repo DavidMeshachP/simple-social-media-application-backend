@@ -14,6 +14,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 enum Mode {
     Public,
@@ -21,6 +22,7 @@ enum Mode {
 }
 
 @Entity
+@Table(name = "posts")
 public class Post {
 
     @OneToMany(mappedBy = "lPost")
@@ -35,9 +37,6 @@ public class Post {
 
     @Column(name = "user_id")
     private int userId;
-
-    @Column(name = "image")
-    private String image;
 
     @Column(name = "caption")
     private String caption;
@@ -59,13 +58,12 @@ public class Post {
     }
     
 
-    public Post(List<Likes> likes, List<Comment> comments, Integer userId, Long id, String image, String caption, Mode mode,
+    public Post(List<Likes> likes, List<Comment> comments, Integer userId, Long id, String caption, Mode mode,
             LocalDateTime created, LocalDateTime modified) {
         this.userId = userId;
         this.likes = likes;
         this.comments = comments;
         this.id = id;
-        this.image = image;
         this.caption = caption;
         this.mode = mode;
         this.created = created;
@@ -94,14 +92,6 @@ public class Post {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
     }
 
     public String getCaption() {

@@ -23,17 +23,8 @@ public class PostServiceImpl implements PostService {
     public Post save(Post post) {
 
         try {
-            Optional<Post> postOptional = postRepository.findById(post.getId());
-            if(postOptional.isPresent()){
-
-                updatePost(post.getId(), post);
-
-            }
-            else {
-
-                postRepository.save(post);
-
-            }
+            
+            postRepository.save(post);
 
         } 
         catch (Exception e) {
@@ -50,7 +41,7 @@ public class PostServiceImpl implements PostService {
         Post newPost = new Post();
 
         newPost.setId(id);
-        newPost.setImage(post.getImage());
+        newPost.setUserId(post.getUserId());
         newPost.setCaption(post.getCaption());
         newPost.setMode(post.getMode());
         newPost.setCreated(post.getCreated());

@@ -1,5 +1,6 @@
 package com.zerplabsintern.simplesocialmediawebapplication.entity;
 
+import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -51,11 +52,11 @@ public class User {
     @Column(name = "gender", nullable = false)
     private Gender gender;
 
-    @Column(name = "age", nullable = false)
-    private String age;
+    @Column(name = "date_of_birth", nullable = false)
+    private Date dateOfBirth;
 
-    @Column(name = "bio" )
-    private String bio;
+    @Column(name = "description" )
+    private String description;
 
     @Column(name = "password", length = 200, nullable = false)
     private String password;
@@ -63,11 +64,11 @@ public class User {
     @Column(name = "image")
     private String image;
     
-    @Column(name = "created_on", nullable = false, updatable = false)
+    @Column(name = "created", nullable = false, updatable = false)
     @CreationTimestamp
     private LocalDateTime createdOn;
 
-    @Column(name = "modified_on")
+    @Column(name = "modified")
     @UpdateTimestamp
     private LocalDateTime modifiedOn;
 
@@ -76,7 +77,7 @@ public class User {
 
     }
 
-    public User(List<Friend> friends, List<Post> posts, List<Likes> likes, List<Comment> comments, Long id, String name, String emailId, Gender gender, String age, String bio, String password, String image,
+    public User(List<Friend> friends, List<Post> posts, List<Likes> likes, List<Comment> comments, Long id, String name, String emailId, Gender gender, Date dateOfBirth, String description, String password, String image,
             LocalDateTime createdOn, LocalDateTime modifiedOn) {
         this.friends = friends;
         this.posts = posts;
@@ -86,8 +87,8 @@ public class User {
         this.name = name;
         this.emailId = emailId;
         this.gender = gender;
-        this.age = age;
-        this.bio = bio;
+        this.dateOfBirth = dateOfBirth;
+        this.description = description;
         this.password = password;
         this.image = image;
         this.createdOn = createdOn;
@@ -126,20 +127,12 @@ public class User {
         this.gender = gender;
     }
 
-    public String getAge() {
-        return age;
+    public String getDescription() {
+        return description;
     }
 
-    public void setAge(String age) {
-        this.age = age;
-    }
-
-    public String getBio() {
-        return bio;
-    }
-
-    public void setBio(String bio) {
-        this.bio = bio;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getPassword() {
@@ -173,6 +166,14 @@ public class User {
     public void setImage(String image) {
         this.image = image;
     }
-    
+
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+   
 
 }

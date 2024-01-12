@@ -20,7 +20,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/user")
+    @PostMapping("/users")
     public ResponseEntity<?> createUser( @RequestBody User user ) {
         try {
             return new ResponseEntity<>(userService.save(user), HttpStatus.OK);
@@ -30,23 +30,23 @@ public class UserController {
 
     }
 
-    @PutMapping("/user/{id}")
+    @PutMapping("/users/{id}")
     public ResponseEntity<?> updateUser( @PathVariable Long id, @RequestBody User user) {
         
         return new ResponseEntity<>(userService.updateUser(id,user), HttpStatus.OK);
     }
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/users/{id}")
     public ResponseEntity<?> getUser(@PathVariable Long id) {
         return new ResponseEntity<>(userService.getUser(id),HttpStatus.OK);
     }
 
-    @GetMapping("/getAllUser/{name}")
+    @GetMapping("/all-users/{name}")
     public ResponseEntity<?> getAllUser(@PathVariable String name) {
         return new ResponseEntity<>(userService.getAllUser(name),HttpStatus.OK);
     }
 
-    @DeleteMapping("/user/{id}")
+    @DeleteMapping("/users/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
 
         return new ResponseEntity<>(userService.deleteUser(id), HttpStatus.OK);

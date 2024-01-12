@@ -21,7 +21,7 @@ public class CommentController {
     @Autowired
     private CommentService commentService;
 
-    @PostMapping("/comment")
+    @PostMapping("/comments")
     public ResponseEntity<?> addComment(@RequestBody CommentDto commentDto) {
         try {
             return new ResponseEntity<>(commentService.addComment(commentDto),HttpStatus.OK);
@@ -30,7 +30,7 @@ public class CommentController {
         }
     }
 
-    @PutMapping("/comment")
+    @PutMapping("/comments")
     public ResponseEntity<?> updateComment(@RequestBody Comment comment) {
         try {
             return new ResponseEntity<>(commentService.updateComment(comment),HttpStatus.OK);
@@ -39,7 +39,7 @@ public class CommentController {
         }
     }
 
-    @DeleteMapping("/comment/{id}")
+    @DeleteMapping("/comments/{id}")
     public ResponseEntity<?> deleteComment(@PathVariable Long id) {
         try {
             return new ResponseEntity<>(commentService.removeComment(id),HttpStatus.OK);
@@ -48,7 +48,7 @@ public class CommentController {
         }
     }
 
-    @GetMapping("/comment/{id}")
+    @GetMapping("/comments/{id}")
     public ResponseEntity<?> getAllComments(@PathVariable Long id) {
         try {
             return new ResponseEntity<>(commentService.getAllComment(id),HttpStatus.OK);

@@ -1,8 +1,5 @@
 package com.zerplabsintern.simplesocialmediawebapplication.dto;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public class LikeDto {
 
     private long id;
