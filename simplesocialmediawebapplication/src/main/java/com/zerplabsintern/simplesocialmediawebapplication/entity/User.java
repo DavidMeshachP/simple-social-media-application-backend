@@ -1,11 +1,13 @@
 package com.zerplabsintern.simplesocialmediawebapplication.entity;
 
 import java.sql.Date;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+
+import com.zerplabsintern.simplesocialmediawebapplication.enums.Gender;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,11 +19,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
-enum Gender {
-    Male,
-    Female
-}
-
 @Entity
 @Table(name = "users")
 public class User {
@@ -29,7 +26,7 @@ public class User {
     @OneToMany(mappedBy = "fUser")
     private List<Friend> friends;
 
-    @OneToMany(mappedBy = "userId")
+    @OneToMany(mappedBy = "pUser")
     private List<Post> posts;
 
     @OneToMany(mappedBy = "lUser")
@@ -42,43 +39,44 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_name", nullable = false)
+    @Column(name = "user_name")
     private String name;
 
-    @Column(name = "email_id", unique = true, length = 40, nullable = false)
+    @Column(name = "email_id")
     private String emailId;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "gender", nullable = false)
+    @Column(name = "gender")
     private Gender gender;
 
-    @Column(name = "date_of_birth", nullable = false)
+    @Column(name = "image")
+    private byte[] image;
+
+    @Column(name = "date_of_birth")
     private Date dateOfBirth;
 
     @Column(name = "description" )
     private String description;
 
-    @Column(name = "password", length = 200, nullable = false)
+    @Column(name = "password")
     private String password;
-
-    @Column(name = "image")
-    private String image;
     
-    @Column(name = "created", nullable = false, updatable = false)
+    @Column(name = "created")
     @CreationTimestamp
-    private LocalDateTime createdOn;
+    private ZonedDateTime createdOn;
 
     @Column(name = "modified")
     @UpdateTimestamp
-    private LocalDateTime modifiedOn;
+    private ZonedDateTime modifiedOn;
 
 
     public User() {
 
     }
 
-    public User(List<Friend> friends, List<Post> posts, List<Likes> likes, List<Comment> comments, Long id, String name, String emailId, Gender gender, Date dateOfBirth, String description, String password, String image,
-            LocalDateTime createdOn, LocalDateTime modifiedOn) {
+    public User(List<Friend> friends, List<Post> posts, List<Likes> likes, List<Comment> comments, Long id, String name,
+            String emailId, Gender gender, byte[] image, Date dateOfBirth, String description, String password,
+            ZonedDateTime createdOn, ZonedDateTime modifiedOn) {
         this.friends = friends;
         this.posts = posts;
         this.likes = likes;
@@ -87,10 +85,10 @@ public class User {
         this.name = name;
         this.emailId = emailId;
         this.gender = gender;
+        this.image = image;
         this.dateOfBirth = dateOfBirth;
         this.description = description;
         this.password = password;
-        this.image = image;
         this.createdOn = createdOn;
         this.modifiedOn = modifiedOn;
     }
@@ -143,28 +141,28 @@ public class User {
         this.password = password;
     }   
 
-    public LocalDateTime getCreatedOn() {
-        return createdOn;
-    }
-
-    public void setCreatedOn(LocalDateTime createdOn) {
-        this.createdOn = createdOn;
-    }
-
-    public LocalDateTime getModifiedOn() {
-        return modifiedOn;
-    }
-
-    public void setModifiedOn(LocalDateTime modifiedOn) {
-        this.modifiedOn = modifiedOn;
-    }
-    
-    public String getImage() {
+    public byte[] getImage() {
         return image;
     }
 
-    public void setImage(String image) {
+    public void setImage(byte[] image) {
         this.image = image;
+    }
+
+    public ZonedDateTime getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(ZonedDateTime createdOn) {
+        this.createdOn = createdOn;
+    }
+
+    public ZonedDateTime getModifiedOn() {
+        return modifiedOn;
+    }
+
+    public void setModifiedOn(ZonedDateTime modifiedOn) {
+        this.modifiedOn = modifiedOn;
     }
 
     public Date getDateOfBirth() {

@@ -23,13 +23,13 @@ public class PostImages {
     private Post pIPost;
 
     @Column(name = "image")
-    private String image;
+    private byte[] image;
     
     public PostImages() {
 
     }
 
-    public PostImages(Long id, Post pIPost, String image) {
+    public PostImages(Long id, Post pIPost, byte[] image) {
         this.id = id;
         this.pIPost = pIPost;
         this.image = image;
@@ -51,11 +51,11 @@ public class PostImages {
         this.pIPost = pIPost;
     }
 
-    public String getImage() {
+    public byte[] getImage() {
         return image;
     }
 
-    public void setImage(String image) {
+    public void setImage(byte[] image) {
         this.image = image;
     }
 

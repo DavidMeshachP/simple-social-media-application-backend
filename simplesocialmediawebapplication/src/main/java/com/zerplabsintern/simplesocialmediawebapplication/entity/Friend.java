@@ -1,9 +1,11 @@
 package com.zerplabsintern.simplesocialmediawebapplication.entity;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+
+import com.zerplabsintern.simplesocialmediawebapplication.enums.Status;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,12 +17,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-
-enum Status {
-    Accepted,
-    Rejected,
-    Pending
-}
 
 @Entity
 @Table(name = "friends")
@@ -43,17 +39,17 @@ public class Friend {
 
     @CreationTimestamp
     @Column(name = "created", nullable = false, updatable = false)
-    private LocalDateTime created;
+    private ZonedDateTime created;
 
     @UpdateTimestamp
     @Column(name = "modified")
-    private LocalDateTime modified;
+    private ZonedDateTime modified;
 
     public Friend() {
 
     }
 
-    public Friend(User fUser, Long id, int friendId, Status status, LocalDateTime created, LocalDateTime modified) {
+    public Friend(User fUser, Long id, int friendId, Status status, ZonedDateTime created, ZonedDateTime modified) {
         this.fUser = fUser;
         this.id = id;
         this.friendId = friendId;
@@ -94,22 +90,22 @@ public class Friend {
         this.status = status;
     }
 
-    public LocalDateTime getCreated() {
+    public ZonedDateTime getCreated() {
         return created;
     }
 
-    public void setCreated(LocalDateTime created) {
+    public void setCreated(ZonedDateTime created) {
         this.created = created;
     }
 
-    public LocalDateTime getModified() {
+    public ZonedDateTime getModified() {
         return modified;
     }
 
-    public void setModified(LocalDateTime modified) {
+    public void setModified(ZonedDateTime modified) {
         this.modified = modified;
     }
 
-    
+        
     
 }

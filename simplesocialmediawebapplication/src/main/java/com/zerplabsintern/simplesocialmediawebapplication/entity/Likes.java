@@ -1,6 +1,6 @@
 package com.zerplabsintern.simplesocialmediawebapplication.entity;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -32,17 +32,17 @@ public class Likes {
 
     @Column(name = "created_on", nullable = false, updatable = false)
     @CreationTimestamp
-    private LocalDateTime createdOn;
+    private ZonedDateTime createdOn;
 
     @Column(name = "modified_on")
     @UpdateTimestamp
-    private LocalDateTime modifiedOn;
+    private ZonedDateTime modifiedOn;
 
     public Likes() {
         
     }
 
-    public Likes(Long id, User lUser, Post lPost, LocalDateTime createdOn, LocalDateTime modifiedOn) {
+    public Likes(Long id, User lUser, Post lPost, ZonedDateTime createdOn, ZonedDateTime modifiedOn) {
         this.id = id;
         this.lUser = lUser;
         this.lPost = lPost;
@@ -74,20 +74,22 @@ public class Likes {
         this.lPost = lPost;
     }
 
-    public LocalDateTime getCreatedOn() {
+    public ZonedDateTime getCreatedOn() {
         return createdOn;
     }
 
-    public void setCreatedOn(LocalDateTime createdOn) {
+    public void setCreatedOn(ZonedDateTime createdOn) {
         this.createdOn = createdOn;
     }
 
-    public LocalDateTime getModifiedOn() {
+    public ZonedDateTime getModifiedOn() {
         return modifiedOn;
     }
 
-    public void setModifiedOn(LocalDateTime modifiedOn) {
+    public void setModifiedOn(ZonedDateTime modifiedOn) {
         this.modifiedOn = modifiedOn;
     }
+
+    
 
 }
