@@ -1,6 +1,6 @@
 package com.zerplabsintern.simplesocialmediawebapplication.entity;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -34,18 +34,18 @@ public class Comment {
     private String comment;
 
     @CreationTimestamp
-    @Column(name = "created", nullable = false, updatable = false)
-    private LocalDateTime created;
+    @Column(name = "created")
+    private ZonedDateTime created;
 
     @UpdateTimestamp
     @Column(name = "modified")
-    private LocalDateTime modified;
+    private ZonedDateTime modified;
 
     public Comment() {
 
     }
 
-    public Comment(User cUser, Post cPost, Long id, String comment, LocalDateTime created, LocalDateTime modified) {
+    public Comment(User cUser, Post cPost, Long id, String comment, ZonedDateTime created, ZonedDateTime modified) {
         this.cUser = cUser;
         this.cPost = cPost;
         this.id = id;
@@ -86,22 +86,20 @@ public class Comment {
         this.comment = comment;
     }
 
-    public LocalDateTime getCreated() {
+    public ZonedDateTime getCreated() {
         return created;
     }
 
-    public void setCreated(LocalDateTime created) {
+    public void setCreated(ZonedDateTime created) {
         this.created = created;
     }
 
-    public LocalDateTime getModified() {
+    public ZonedDateTime getModified() {
         return modified;
     }
 
-    public void setModified(LocalDateTime modified) {
+    public void setModified(ZonedDateTime modified) {
         this.modified = modified;
     }
-
-    
     
 }

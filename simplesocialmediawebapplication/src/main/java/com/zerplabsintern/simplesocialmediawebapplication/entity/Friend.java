@@ -26,19 +26,20 @@ public class Friend {
     @JoinColumn(name = "user_id")
     private User fUser;
 
+    @ManyToOne
+    @JoinColumn(name = "friend_id")
+    private User fUser2;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "friend_id")
-    private int friendId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private Status status;
 
     @CreationTimestamp
-    @Column(name = "created", nullable = false, updatable = false)
+    @Column(name = "created")
     private ZonedDateTime created;
 
     @UpdateTimestamp
@@ -49,10 +50,10 @@ public class Friend {
 
     }
 
-    public Friend(User fUser, Long id, int friendId, Status status, ZonedDateTime created, ZonedDateTime modified) {
+    public Friend(User fUser, User fUser2, Long id, Status status, ZonedDateTime created, ZonedDateTime modified) {
         this.fUser = fUser;
+        this.fUser2 = fUser2;
         this.id = id;
-        this.friendId = friendId;
         this.status = status;
         this.created = created;
         this.modified = modified;
@@ -72,14 +73,6 @@ public class Friend {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public int getFriendId() {
-        return friendId;
-    }
-
-    public void setFriendId(int friendId) {
-        this.friendId = friendId;
     }
 
     public Status getStatus() {
@@ -104,6 +97,14 @@ public class Friend {
 
     public void setModified(ZonedDateTime modified) {
         this.modified = modified;
+    }
+
+    public User getfUser2() {
+        return fUser2;
+    }
+
+    public void setfUser2(User fUser2) {
+        this.fUser2 = fUser2;
     }
 
         

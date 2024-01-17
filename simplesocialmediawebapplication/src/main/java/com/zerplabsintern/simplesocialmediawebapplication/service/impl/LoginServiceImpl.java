@@ -1,5 +1,6 @@
 package com.zerplabsintern.simplesocialmediawebapplication.service.impl;
 
+import java.util.Base64;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ public class LoginServiceImpl implements LoginService {
     private UserService userService;
 
     @Override
-    public boolean checkLoginAndGenerateToken(LoginDto loginDto) {
+    public String checkLoginAndGenerateToken(LoginDto loginDto) {
 
         List<User> users = userService.getAllUser(loginDto.getUserName());
 
@@ -26,17 +27,22 @@ public class LoginServiceImpl implements LoginService {
             for (User user : users) {
 
                 if(user.getPassword().equals(loginDto.getPassword())){
-                    return true;
+                    return encodeBase64(user.getEmailId());
                 }
 
             }
 
         }
         else {
-            return false;
+            return null;
         }
 
-        return false;
+        return null;
+    }
+
+    private String encodeBase64(String input) {
+        byte[] encodedBytes = Base64.getEncoder().encode(input.getBytes());
+        return new String(encodedBytes);
     }
 
 }

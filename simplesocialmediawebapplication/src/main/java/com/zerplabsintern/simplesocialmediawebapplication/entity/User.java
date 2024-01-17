@@ -26,6 +26,9 @@ public class User {
     @OneToMany(mappedBy = "fUser")
     private List<Friend> friends;
 
+    @OneToMany(mappedBy = "fUser2")
+    private List<Friend> friends2;
+
     @OneToMany(mappedBy = "pUser")
     private List<Post> posts;
 

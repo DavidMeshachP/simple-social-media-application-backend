@@ -8,6 +8,7 @@ import com.zerplabsintern.simplesocialmediawebapplication.entity.User;
 
 public interface UserRepository extends JpaRepository< User , Long >{
 
+    // @Query()
     List<User> findByName(String name);
     
 }

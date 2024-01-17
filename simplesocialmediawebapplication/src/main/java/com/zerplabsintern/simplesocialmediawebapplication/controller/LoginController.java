@@ -19,9 +19,10 @@ public class LoginController {
     @PostMapping("/login")
     public ResponseEntity<?> loginCheck(@RequestBody LoginDto loginDto) {
 
+        String encodeString = loginService.checkLoginAndGenerateToken(loginDto);
 
-        if( loginService.checkLoginAndGenerateToken(loginDto) ) {
-            return new ResponseEntity<>("User Credentials validated",HttpStatus.OK) ;
+        if( !encodeString.isEmpty() ) {
+            return new ResponseEntity<>(encodeString,HttpStatus.OK) ;
         }
         else {
             return new ResponseEntity<>("User credentials not authenticated",HttpStatus.UNAUTHORIZED);
