@@ -9,7 +9,7 @@ public interface CommentService {
 
     CommentDto addComment(CommentDto commentDto);
 
-    CommentDto updateComment(Comment comment);
+    Comment updateComment(CommentDto commentDto);
 
     boolean removeComment(Long id);
 

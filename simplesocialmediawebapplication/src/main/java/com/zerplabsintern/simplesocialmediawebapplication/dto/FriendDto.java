@@ -1,13 +1,9 @@
 package com.zerplabsintern.simplesocialmediawebapplication.dto;
 
+import com.zerplabsintern.simplesocialmediawebapplication.enums.Status;
+
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-
-enum Status {
-    Accepted,
-    Rejected,
-    Pending
-}
 
 public class FriendDto {
 
@@ -18,15 +14,13 @@ public class FriendDto {
     private Long friendId;
 
     @Enumerated(EnumType.STRING)
-    private String status;
+    private Status status;
 
     public FriendDto() {
         
-    }
+    }    
 
-    
-
-    public FriendDto(Long id, Long userId, Long friendId, String status) {
+    public FriendDto(Long id, Long userId, Long friendId, Status status) {
         this.id = id;
         this.userId = userId;
         this.friendId = friendId;
@@ -57,11 +51,11 @@ public class FriendDto {
         this.id = id;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }   
     

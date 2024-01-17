@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zerplabsintern.simplesocialmediawebapplication.entity.Post;
+import com.zerplabsintern.simplesocialmediawebapplication.dto.PostDto;
 import com.zerplabsintern.simplesocialmediawebapplication.service.PostService;
 
 @RestController
@@ -21,10 +21,10 @@ public class PostController {
     private PostService postService;
 
     @PostMapping("/posts")
-    public ResponseEntity<?> createPost(@RequestBody Post post) {
+    public ResponseEntity<?> createPost(@RequestBody PostDto postDto) {
 
         try {
-            return new ResponseEntity<>(postService.save(post),HttpStatus.OK);
+            return new ResponseEntity<>(postService.save(postDto),HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("check the data that was sent again.",HttpStatus.BAD_REQUEST);
         }
@@ -32,11 +32,11 @@ public class PostController {
     }
 
     @PutMapping("/posts/{id}")
-    public ResponseEntity<?> updatePost(@PathVariable Long id, @RequestBody Post post) {
+    public ResponseEntity<?> updatePost(@PathVariable Long id, @RequestBody PostDto postDto) {
 
         try {
 
-            return new ResponseEntity<>(postService.updatePost(id, post),HttpStatus.OK);
+            return new ResponseEntity<>(postService.updatePost(id, postDto),HttpStatus.OK);
             
         } catch (Exception e) {
             return new ResponseEntity<>("check the data that was sent again.",HttpStatus.BAD_REQUEST);
@@ -67,10 +67,10 @@ public class PostController {
     }
 
     @GetMapping("/user-posts/{userId}")
-    public ResponseEntity<?> getAllPostByUserId(@PathVariable Long id) {
+    public ResponseEntity<?> getAllPostByUserId(@PathVariable Long userId) {
 
         try {
-            return new ResponseEntity<>(postService.getAllPostByUserId(id),HttpStatus.OK);
+            return new ResponseEntity<>(postService.getAllPostByUserId(userId),HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e,HttpStatus.BAD_REQUEST);
         }

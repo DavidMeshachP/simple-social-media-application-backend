@@ -37,9 +37,9 @@ public class PostImagesServiceImpl implements PostImagesService {
     }
 
     @Override
-    public boolean deletePostImages(PostImagesDto postImagesDto) {
+    public boolean deletePostImages( Long id ) {
         try {
-            postImagesRepository.deleteById(postImagesDto.getId());;
+            postImagesRepository.deleteById(postImagesRepository.getReferenceById(id).getId());;
         } catch (Exception e) {
             return false;
         }
@@ -47,12 +47,12 @@ public class PostImagesServiceImpl implements PostImagesService {
     }
 
     @Override
-    public PostImagesDto updatePostImage(PostImagesDto postImagesDto) {
+    public PostImagesDto updatePostImage(Long id, PostImagesDto postImagesDto) {
 
         try {
             PostImages postImages = new PostImages();
 
-            postImages.setId(postImagesDto.getId());
+            postImages.setId(id);
             postImages.setImage(postImagesDto.getImage());
             postImagesRepository.save(postImages);
 

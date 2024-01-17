@@ -6,8 +6,8 @@ public interface PostImagesService {
 
     PostImagesDto addPostImages(PostImagesDto postImagesDto);
 
-    boolean deletePostImages(PostImagesDto postImagesDto);
+    boolean deletePostImages(Long id);
 
-    PostImagesDto updatePostImage(PostImagesDto postImagesDto);
+    PostImagesDto updatePostImage(Long id, PostImagesDto postImagesDto);
     
 }

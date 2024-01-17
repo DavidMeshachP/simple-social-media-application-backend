@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.zerplabsintern.simplesocialmediawebapplication.dto.FriendDto;
 import com.zerplabsintern.simplesocialmediawebapplication.entity.Friend;
 import com.zerplabsintern.simplesocialmediawebapplication.repository.FriendRepository;
+import com.zerplabsintern.simplesocialmediawebapplication.repository.UserRepository;
 import com.zerplabsintern.simplesocialmediawebapplication.service.FriendService;
 
 @Service
@@ -15,10 +17,22 @@ public class FriendServiceImpl implements FriendService {
     @Autowired
     private FriendRepository friendRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @Override
-    public Friend addFriend(Friend friend) {
+    public Friend addFriend(FriendDto friendDto) {
         try {
-            return friendRepository.save(friend);
+
+            Friend newFriend = new Friend();
+
+            newFriend.setId(friendDto.getId());
+            newFriend.setfUser(userRepository.getReferenceById(friendDto.getUserId()));
+            newFriend.setfUser2(userRepository.getReferenceById(friendDto.getFriendId()));
+            newFriend.setStatus(friendDto.getStatus());
+            
+            friendRepository.save(newFriend);
+            return friendRepository.getReferenceById(friendDto.getId());
         } catch (Exception e) {
             return null;
         }

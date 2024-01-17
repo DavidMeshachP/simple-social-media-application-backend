@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.zerplabsintern.simplesocialmediawebapplication.dto.CommentDto;
-import com.zerplabsintern.simplesocialmediawebapplication.entity.Comment;
 import com.zerplabsintern.simplesocialmediawebapplication.service.CommentService;
 
 @RestController
@@ -31,9 +30,9 @@ public class CommentController {
     }
 
     @PutMapping("/comments")
-    public ResponseEntity<?> updateComment(@RequestBody Comment comment) {
+    public ResponseEntity<?> updateComment(@RequestBody CommentDto commentDto) {
         try {
-            return new ResponseEntity<>(commentService.updateComment(comment),HttpStatus.OK);
+            return new ResponseEntity<>(commentService.updateComment(commentDto),HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("check data again",HttpStatus.OK);
         }

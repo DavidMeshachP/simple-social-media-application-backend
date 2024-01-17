@@ -6,6 +6,7 @@ import java.util.List;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.zerplabsintern.simplesocialmediawebapplication.enums.Mode;
 
 import jakarta.persistence.Column;
@@ -25,12 +26,15 @@ import jakarta.persistence.Table;
 public class Post {
 
     @OneToMany(mappedBy = "lPost")
+    @JsonIgnore
     private List<Likes> likes;
 
     @OneToMany(mappedBy = "cPost")
+    @JsonIgnore
     private List<Comment> comments;
 
     @OneToMany(mappedBy = "pIPost")
+    @JsonIgnore
     private List<PostImages> postImages;
 
     @ManyToOne
@@ -41,9 +45,6 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // @Column(name = "user_id")
-    // private int userId;
-
     @Column(name = "caption")
     private String caption;
 
@@ -52,7 +53,7 @@ public class Post {
     private Mode mode;
 
     @CreationTimestamp
-    @Column(name = "created", updatable = false)
+    @Column(name = "created")
     private ZonedDateTime created;
 
     @UpdateTimestamp
@@ -132,6 +133,20 @@ public class Post {
         this.modified = modified;
     }
 
-        
+    public List<PostImages> getPostImages() {
+        return postImages;
+    }
+
+    public void setPostImages(List<PostImages> postImages) {
+        this.postImages = postImages;
+    }
+
+    public User getpUser() {
+        return pUser;
+    }
+
+    public void setpUser(User pUser) {
+        this.pUser = pUser;
+    }
     
 }

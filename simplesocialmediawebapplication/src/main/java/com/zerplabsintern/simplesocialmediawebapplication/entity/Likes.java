@@ -30,13 +30,13 @@ public class Likes {
     @JoinColumn(name = "post_id")
     private Post lPost;
 
-    @Column(name = "created_on", nullable = false, updatable = false)
+    @Column(name = "created")
     @CreationTimestamp
-    private ZonedDateTime createdOn;
+    private ZonedDateTime created;
 
-    @Column(name = "modified_on")
+    @Column(name = "modified")
     @UpdateTimestamp
-    private ZonedDateTime modifiedOn;
+    private ZonedDateTime modified;
 
     public Likes() {
         
@@ -46,8 +46,8 @@ public class Likes {
         this.id = id;
         this.lUser = lUser;
         this.lPost = lPost;
-        this.createdOn = createdOn;
-        this.modifiedOn = modifiedOn;
+        this.created = createdOn;
+        this.modified = modifiedOn;
     }
 
     public Long getId() {
@@ -75,19 +75,19 @@ public class Likes {
     }
 
     public ZonedDateTime getCreatedOn() {
-        return createdOn;
+        return created;
     }
 
     public void setCreatedOn(ZonedDateTime createdOn) {
-        this.createdOn = createdOn;
+        this.created = createdOn;
     }
 
     public ZonedDateTime getModifiedOn() {
-        return modifiedOn;
+        return modified;
     }
 
     public void setModifiedOn(ZonedDateTime modifiedOn) {
-        this.modifiedOn = modifiedOn;
+        this.modified = modifiedOn;
     }
 
     

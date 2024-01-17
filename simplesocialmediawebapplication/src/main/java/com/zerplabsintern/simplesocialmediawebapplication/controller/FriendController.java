@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.zerplabsintern.simplesocialmediawebapplication.dto.FriendDto;
-import com.zerplabsintern.simplesocialmediawebapplication.entity.Friend;
 import com.zerplabsintern.simplesocialmediawebapplication.service.FriendService;
 import com.zerplabsintern.simplesocialmediawebapplication.service.impl.FriendServiceImpl;
 
@@ -31,9 +30,9 @@ public class FriendController {
     }
 
     @PostMapping("/friends")
-    public ResponseEntity<?> addFriend(@RequestBody Friend friend) {
+    public ResponseEntity<?> addFriend(@RequestBody FriendDto friendDto) {
         try {
-            return new ResponseEntity<>(friendService.addFriend(friend),HttpStatus.OK);
+            return new ResponseEntity<>(friendService.addFriend(friendDto),HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("check the data",HttpStatus.BAD_REQUEST);
         }

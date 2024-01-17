@@ -63,18 +63,18 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public CommentDto updateComment(Comment comment) {
+    public Comment updateComment(CommentDto commentDto) {
         try {
-            Comment newComment = commentRepository.save(comment);
+            Comment newComment = new Comment();
 
-            CommentDto commentDto = new CommentDto();
+            newComment.setId(commentDto.getId());
+            newComment.setComment(commentDto.getComment());
+            newComment.setcPost(postRepository.getReferenceById(commentDto.getId()));
+            newComment.setcUser(userRepository.getReferenceById(commentDto.getId()));
 
-            commentDto.setId(newComment.getId());
-            commentDto.setComment(newComment.getComment());
-            commentDto.setPostId(newComment.getcPost().getId());
-            commentDto.setUserId(newComment.getcUser().getId());
+            commentRepository.save(newComment);
 
-            return commentDto;
+            return commentRepository.getReferenceById(commentDto.getId());
 
         } catch (Exception e) {
             return null;

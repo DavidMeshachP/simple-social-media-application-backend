@@ -59,6 +59,4 @@ public class PostImages {
         this.image = image;
     }
 
-    
-
 }

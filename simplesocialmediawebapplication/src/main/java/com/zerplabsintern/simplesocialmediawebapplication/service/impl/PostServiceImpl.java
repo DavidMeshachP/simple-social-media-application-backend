@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.zerplabsintern.simplesocialmediawebapplication.dto.PostDto;
 import com.zerplabsintern.simplesocialmediawebapplication.entity.Post;
 import com.zerplabsintern.simplesocialmediawebapplication.repository.PostRepository;
 import com.zerplabsintern.simplesocialmediawebapplication.repository.UserRepository;
@@ -19,31 +20,38 @@ public class PostServiceImpl implements PostService {
     @Autowired
     private UserRepository userRepository;
 
-    public Post save(Post post) {
+    public Post save(PostDto postDto) {
 
         try {
-            
-            postRepository.save(post);
+
+            Post newPost = new Post();
+
+            newPost.setCaption( postDto.getCaption());
+            newPost.setId(postDto.getId());
+            newPost.setMode(postDto.getMode());
+            newPost.setpUser(userRepository.getReferenceById(postDto.getUserId()));
+
+            postRepository.save(newPost);
 
         } 
         catch (Exception e) {
             return null;
         }
 
-        return postRepository.getReferenceById(post.getId());
+        return postRepository.getReferenceById(postDto.getId());
         
     }
 
 
-    public Post updatePost(Long id, Post post) {
+    public Post updatePost(Long id, PostDto postDto) {
 
         Post newPost = new Post();
 
-        newPost.setId(id);
-        newPost.setUserId(post.getUserId());
-        newPost.setCaption(post.getCaption());
-        newPost.setMode(post.getMode());
-        newPost.setCreated(post.getCreated());
+        newPost.setCaption( postDto.getCaption());
+        newPost.setId(postDto.getId());
+        newPost.setMode(postDto.getMode());
+        newPost.setpUser(userRepository.getReferenceById(postDto.getUserId()));
+        newPost.setCreated(postRepository.getReferenceById(postDto.getId()).getCreated());
 
         postRepository.save(newPost);
 
@@ -89,7 +97,7 @@ public class PostServiceImpl implements PostService {
     public List<Post> getAllPostByUserId(Long id) {
 
         if(userRepository.findById(id).isPresent()){
-            return postRepository.findByUserId(id);
+            return postRepository.findBypUser_Id(id);
 
         }
         else {
