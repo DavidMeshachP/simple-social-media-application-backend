@@ -40,6 +40,8 @@ public class LikeServiceImpl implements LikeService {
             newLike.setlUser(user);
             likeRepository.save(newLike);
 
+            likeDto.setId(newLike.getId());
+
             return likeDto;
             
         } catch (Exception e) {

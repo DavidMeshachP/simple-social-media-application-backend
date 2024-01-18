@@ -30,7 +30,7 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column( name = "comment")
+    @Column( name = "comments")
     private String comment;
 
     @CreationTimestamp

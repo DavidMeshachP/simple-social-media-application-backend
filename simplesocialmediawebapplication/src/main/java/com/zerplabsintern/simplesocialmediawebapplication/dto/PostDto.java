@@ -6,8 +6,6 @@ public class PostDto {
 
     private Long id;
 
-    private Long postId;
-
     private Long userId;
 
     private Mode mode;
@@ -18,20 +16,11 @@ public class PostDto {
         
     }    
 
-    public PostDto(Long id, Long postId, Long userId, Mode mode, String caption) {
+    public PostDto(Long id, Long userId, Mode mode, String caption) {
         this.id = id;
-        this.postId = postId;
         this.userId = userId;
         this.mode = mode;
         this.caption = caption;
-    }
-
-    public Long getPostId() {
-        return postId;
-    }
-
-    public void setPostId(Long postId) {
-        this.postId = postId;
     }
 
     public Long getUserId() {

@@ -7,7 +7,7 @@ import com.zerplabsintern.simplesocialmediawebapplication.entity.Friend;
 
 public interface FriendService {
 
-    Friend addFriend(FriendDto friendDto);
+    FriendDto addFriend(FriendDto friendDto);
 
     List<Friend> getFriends(Long id);
 

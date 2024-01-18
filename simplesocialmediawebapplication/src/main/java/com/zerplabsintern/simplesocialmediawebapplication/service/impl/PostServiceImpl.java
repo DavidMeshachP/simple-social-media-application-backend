@@ -20,14 +20,13 @@ public class PostServiceImpl implements PostService {
     @Autowired
     private UserRepository userRepository;
 
-    public Post save(PostDto postDto) {
+    public PostDto save(PostDto postDto) {
 
+        Post newPost = new Post();
+        
         try {
 
-            Post newPost = new Post();
-
             newPost.setCaption( postDto.getCaption());
-            newPost.setId(postDto.getId());
             newPost.setMode(postDto.getMode());
             newPost.setpUser(userRepository.getReferenceById(postDto.getUserId()));
 
@@ -38,24 +37,33 @@ public class PostServiceImpl implements PostService {
             return null;
         }
 
-        return postRepository.getReferenceById(postDto.getId());
+        postDto.setId(newPost.getId());
+
+        return postDto;
         
     }
 
 
-    public Post updatePost(Long id, PostDto postDto) {
+    public PostDto updatePost(Long id, PostDto postDto) {
 
-        Post newPost = new Post();
+        if(postRepository.findById(id).isPresent()){
 
-        newPost.setCaption( postDto.getCaption());
-        newPost.setId(postDto.getId());
-        newPost.setMode(postDto.getMode());
-        newPost.setpUser(userRepository.getReferenceById(postDto.getUserId()));
-        newPost.setCreated(postRepository.getReferenceById(postDto.getId()).getCreated());
+            Post newPost = new Post();
 
-        postRepository.save(newPost);
+            newPost.setCaption( postDto.getCaption());
+            newPost.setId(postDto.getId());
+            newPost.setMode(postDto.getMode());
+            newPost.setpUser(userRepository.getReferenceById(postDto.getUserId()));
+            newPost.setCreated(postRepository.getReferenceById(postDto.getId()).getCreated());
 
-        return newPost;
+            postRepository.save(newPost);
+
+            return postDto;
+
+        }
+        else {
+            return null;
+        }
 
     }
 

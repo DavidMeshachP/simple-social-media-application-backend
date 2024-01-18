@@ -21,7 +21,7 @@ public class FriendServiceImpl implements FriendService {
     private UserRepository userRepository;
 
     @Override
-    public Friend addFriend(FriendDto friendDto) {
+    public FriendDto addFriend(FriendDto friendDto) {
         try {
 
             Friend newFriend = new Friend();
@@ -32,7 +32,10 @@ public class FriendServiceImpl implements FriendService {
             newFriend.setStatus(friendDto.getStatus());
             
             friendRepository.save(newFriend);
-            return friendRepository.getReferenceById(friendDto.getId());
+
+            friendDto.setId(newFriend.getId());
+
+            return friendDto;
         } catch (Exception e) {
             return null;
         }

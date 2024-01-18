@@ -2,15 +2,16 @@ package com.zerplabsintern.simplesocialmediawebapplication.service;
 
 import java.util.List;
 
+import com.zerplabsintern.simplesocialmediawebapplication.dto.UserDto;
 import com.zerplabsintern.simplesocialmediawebapplication.entity.User;
 
 public interface UserService {
 
-    User save(User user);
+    UserDto save(UserDto userDto);
 
-    User updateUser(Long id, User user);
+    UserDto updateUser(Long id, UserDto userDto);
 
-    User deleteUser(Long id);
+    boolean deleteUser(Long id);
 
     User getUser(Long id);
 

@@ -1,10 +1,12 @@
 package com.zerplabsintern.simplesocialmediawebapplication.service.impl;
 
+import java.util.Base64;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.zerplabsintern.simplesocialmediawebapplication.dto.UserDto;
 import com.zerplabsintern.simplesocialmediawebapplication.entity.User;
 import com.zerplabsintern.simplesocialmediawebapplication.repository.UserRepository;
 import com.zerplabsintern.simplesocialmediawebapplication.service.UserService;
@@ -15,30 +17,62 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
     @Override
-    public User save(User user) {
+    public UserDto save(UserDto userDto) {
 
-        if(userRepository.findById(user.getId()).isPresent()){
-            updateUser(user.getId(), user);
+        User newUser = new User();
+
+        newUser.setDateOfBirth(userDto.getDateOfBirth());
+        newUser.setDescription(userDto.getDescription());
+        newUser.setGender(userDto.getGender());
+        newUser.setEmailId(userDto.getEmailId());
+        newUser.setName(userDto.getName());
+        newUser.setPassword(userDto.getPassword());
+        newUser.setImage(Base64.getDecoder().decode(userDto.getImage()));
+
+        Long id = userRepository.findIdbyemailId(userDto.getEmailId());
+
+        if(id != null){
+            return null;
         }
         else{
-            userRepository.save(user);
+            userRepository.save(newUser);
         }
         
-        return userRepository.getReferenceById(user.getId());
+        return userDto;
     }
 
     @Override
-    public User updateUser(Long id, User user) {
+    public UserDto updateUser(Long id, UserDto userDto) {
         try {
 
             if (userRepository.findById(id).isPresent()) {
 
-                userRepository.save(user);
+                User newUser = userRepository.getReferenceById(id);
+
+                if(userDto.getId() != null) {
+                    newUser.setId(id);
+                }
+                if(userDto.getDateOfBirth() !=null){
+                    newUser.setDateOfBirth(userDto.getDateOfBirth());
+                }
+                if(userDto.getDescription() !=null) {
+                    newUser.setDescription(userDto.getDescription());
+                }
+                if(userDto.getGender() !=null) {
+                    newUser.setGender(userDto.getGender());
+                }
+                if(userDto.getName() != null ){
+                    newUser.setName(userDto.getName());
+                }
+                if(userDto.getPassword() !=null) {
+                    newUser.setPassword(userDto.getPassword());
+                }
+                if(userDto.getImage() != null) {
+                    newUser.setImage(Base64.getDecoder().decode(userDto.getImage()));
+                }
+
+                userRepository.save(newUser);
 
             }
             else {
@@ -49,28 +83,26 @@ public class UserServiceImpl implements UserService {
         catch (Exception e) {
             return null;
         }
-        return userRepository.getReferenceById(id);
+        return userDto;
     }
 
     @Override
-    public User deleteUser(Long id) {
+    public boolean deleteUser(Long id) {
         
         try {
 
             if (userRepository.findById(id).isPresent()) {
 
                 userRepository.deleteById(id);
-
+                return true;
             }
             else {
-                return null;
+                return false;
             }
             
         } catch (Exception e) {
-            return null;
+            return false;
         }
-
-        return null;
     }
 
     @Override

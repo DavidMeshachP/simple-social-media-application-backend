@@ -33,13 +33,13 @@ public class CommentServiceImpl implements CommentService {
     public CommentDto addComment(CommentDto commentDto) {
         try {
             Comment newComment = new Comment();
-            newComment.setId(commentDto.getId());
             newComment.setComment(commentDto.getComment());
-            User user = userRepository.findById(commentDto.getId()).orElseThrow(() -> new EntityNotFoundException("User not found"));
-            Post post = postRepository.findById(commentDto.getId()).orElseThrow(() -> new EntityNotFoundException("Post not found"));
+            User user = userRepository.findById(commentDto.getUserId()).orElseThrow(() -> new EntityNotFoundException("User not found"));
+            Post post = postRepository.findById(commentDto.getPostId()).orElseThrow(() -> new EntityNotFoundException("Post not found"));
             newComment.setcUser(user);
             newComment.setcPost(post);
             commentRepository.save(newComment);
+            commentDto.setId(newComment.getId());
             return commentDto;
         } catch (Exception e) {
             return null;
@@ -63,18 +63,19 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Comment updateComment(CommentDto commentDto) {
+    public CommentDto updateComment(CommentDto commentDto) {
         try {
             Comment newComment = new Comment();
 
             newComment.setId(commentDto.getId());
             newComment.setComment(commentDto.getComment());
-            newComment.setcPost(postRepository.getReferenceById(commentDto.getId()));
-            newComment.setcUser(userRepository.getReferenceById(commentDto.getId()));
+            newComment.setcPost(postRepository.getReferenceById(commentDto.getPostId()));
+            newComment.setcUser(userRepository.getReferenceById(commentDto.getUserId()));
+            newComment.setCreated(commentRepository.getReferenceById(commentDto.getId()).getCreated());
 
             commentRepository.save(newComment);
 
-            return commentRepository.getReferenceById(commentDto.getId());
+            return commentDto;
 
         } catch (Exception e) {
             return null;

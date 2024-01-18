@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zerplabsintern.simplesocialmediawebapplication.entity.User;
+import com.zerplabsintern.simplesocialmediawebapplication.dto.UserDto;
 import com.zerplabsintern.simplesocialmediawebapplication.service.UserService;
 
 @RestController
@@ -21,9 +21,9 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/users")
-    public ResponseEntity<?> createUser( @RequestBody User user ) {
+    public ResponseEntity<?> createUser( @RequestBody UserDto userDto ) {
         try {
-            return new ResponseEntity<>(userService.save(user), HttpStatus.OK);
+            return new ResponseEntity<>(userService.save(userDto), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("The Saving of the User did not Succeed.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -31,9 +31,9 @@ public class UserController {
     }
 
     @PutMapping("/users/{id}")
-    public ResponseEntity<?> updateUser( @PathVariable Long id, @RequestBody User user) {
+    public ResponseEntity<?> updateUser( @PathVariable Long id, @RequestBody UserDto userDto) {
         
-        return new ResponseEntity<>(userService.updateUser(id,user), HttpStatus.OK);
+        return new ResponseEntity<>(userService.updateUser(id,userDto), HttpStatus.OK);
     }
 
     @GetMapping("/users/{id}")

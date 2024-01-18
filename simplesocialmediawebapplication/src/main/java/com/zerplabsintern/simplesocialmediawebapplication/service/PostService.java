@@ -7,9 +7,9 @@ import com.zerplabsintern.simplesocialmediawebapplication.entity.Post;
 
 public interface PostService {
 
-    Post save(PostDto postDto);
+    PostDto save(PostDto postDto);
 
-    Post updatePost(Long id, PostDto postDto);
+    PostDto updatePost(Long id, PostDto postDto);
 
     Post deletePost(Long id);
 
