@@ -120,5 +120,14 @@ public class UserServiceImpl implements UserService {
     public List<User> getAllUser(String name) {
         return userRepository.findByName(name);
     } 
+
+    @Override
+    public String findByEmailId(String email) {
+
+        Long id = userRepository.findIdbyemailId(email);
+
+        return userRepository.getReferenceById(id).getEmailId();
+
+    }
      
 }
