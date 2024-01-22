@@ -1,14 +1,14 @@
-package com.zerplabsintern.simplesocialmediawebapplication.service;
+// package com.zerplabsintern.simplesocialmediawebapplication.service;
 
-import com.zerplabsintern.simplesocialmediawebapplication.dto.UserDto;
-import com.zerplabsintern.simplesocialmediawebapplication.entity.User;
+// import com.zerplabsintern.simplesocialmediawebapplication.dto.UserDto;
+// import com.zerplabsintern.simplesocialmediawebapplication.entity.User;
 
-public interface CustomAuthenticationFilterService {
+// public interface CustomAuthenticationFilterService {
 
-    boolean isTokenValid(String token, User user);
+//     boolean isTokenValid(String token, User user);
 
-    String generateToken(UserDto userDto);
+//     String generateToken(UserDto userDto);
 
-    String extractEmail(String token);
+//     String extractEmail(String token);
     
-}
+// }

@@ -9,7 +9,7 @@ import com.zerplabsintern.simplesocialmediawebapplication.entity.Comment;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
-    @Query(value = "Select * from Comment where post_id = ?1", nativeQuery = true)
+    @Query(value = "Select * from Comments where post_id = ?1", nativeQuery = true)
     List<Comment> findBycPost_Id(Long postId);
 
     
