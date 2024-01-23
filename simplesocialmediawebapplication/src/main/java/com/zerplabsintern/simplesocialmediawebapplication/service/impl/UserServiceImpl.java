@@ -2,8 +2,12 @@ package com.zerplabsintern.simplesocialmediawebapplication.service.impl;
 
 import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.zerplabsintern.simplesocialmediawebapplication.dto.UserDto;
@@ -12,10 +16,24 @@ import com.zerplabsintern.simplesocialmediawebapplication.repository.UserReposit
 import com.zerplabsintern.simplesocialmediawebapplication.service.UserService;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
+
+    
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        List<User> users = ;
+
+        if(users.size() == 1) {
+
+            Optional<User> user = userRepository.getReferenceById(username).get(0);
+        }
+
+        return null;
+    }
 
     @Override
     public UserDto save(UserDto userDto) {
