@@ -1,6 +1,7 @@
 package com.zerplabsintern.simplesocialmediawebapplication.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,6 +19,7 @@ import com.zerplabsintern.simplesocialmediawebapplication.service.UserService;
 public class UserController {
 
     @Autowired
+    @Qualifier("userServiceImpl")
     private UserService userService;
 
     @PostMapping("/register/users")

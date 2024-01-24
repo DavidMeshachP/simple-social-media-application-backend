@@ -2,7 +2,7 @@ package com.zerplabsintern.simplesocialmediawebapplication.dto;
 
 public class LoginDto {
 
-    private String userName;
+    private String emailIdString;
 
     private String password;
 
@@ -10,17 +10,9 @@ public class LoginDto {
 
     }
 
-    public LoginDto(String userName, String password) {
-        this.userName = userName;
+    public LoginDto(String emailIdString, String password) {
+        this.emailIdString = emailIdString;
         this.password = password;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
     }
 
     public String getPassword() {
@@ -29,6 +21,14 @@ public class LoginDto {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getEmailIdString() {
+        return emailIdString;
+    }
+
+    public void setEmailIdString(String emailIdString) {
+        this.emailIdString = emailIdString;
     }    
     
 }

@@ -1,26 +1,26 @@
 package com.zerplabsintern.simplesocialmediawebapplication.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
-import com.zerplabsintern.simplesocialmediawebapplication.service.impl.UserServiceImpl;
+import com.zerplabsintern.simplesocialmediawebapplication.service.UserService;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    @Autowired
+    // @Qualifier("UserServiceImpl")
+    private UserService userService;
+
+     @Autowired 
+     private UserDetailsService userDetailsService;
 
     @Bean 
     public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
@@ -30,7 +30,7 @@ public class SecurityConfig {
         
         // return new InMemoryUserDetailsManager(user);
 
-        return new UserServiceImpl();
+        return userDetailsService;
     }
 
     @Bean
@@ -39,17 +39,38 @@ public class SecurityConfig {
         httpSecurity
             .csrf((csrf) ->csrf.disable())
             .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
-            .requestMatchers("/login").permitAll()
+            .requestMatchers("/login","/register/users").permitAll()
             .anyRequest().authenticated()
         );
+
+
 
         return httpSecurity.build();
 
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+    // @Bean
+	// public PasswordEncoder passwordEncoder() {
+	// 	return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+	// }
+
+    // @Bean 
+    // public AuthenticationManager authenticationManager ( UserDetailsService userDetailsService, PasswordEncoder passwordEncoder ) {
+
+    //     DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+
+    //     authenticationProvider.setUserDetailsService(userDetailsService);
+
+    //     authenticationProvider.setPasswordEncoder(passwordEncoder);
+
+    //     ProviderManager providerManager = new ProviderManager(authenticationProvider);
+
+    //     providerManager.setEraseCredentialsAfterAuthentication(false);
+
+    //     return providerManager;
+
+    // }
+
+
     
 }

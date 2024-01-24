@@ -15,24 +15,20 @@ import com.zerplabsintern.simplesocialmediawebapplication.entity.User;
 import com.zerplabsintern.simplesocialmediawebapplication.repository.UserRepository;
 import com.zerplabsintern.simplesocialmediawebapplication.service.UserService;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Autowired
-    private UserRepository userRepository;
-
-    
+    private UserRepository userRepository;    
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        List<User> users = ;
+    public UserDetails loadUserByUsername(String userEmailString) throws UsernameNotFoundException {
 
-        if(users.size() == 1) {
+        User user = findUserByEmailId(userEmailString);
 
-            Optional<User> user = userRepository.getReferenceById(username).get(0);
-        }
-
-        return null;
+        return new user;
     }
 
     @Override
@@ -147,5 +143,24 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userRepository.getReferenceById(id).getEmailId();
 
     }
+
+    @Override
+    public User findUserByEmailId(String email) {
+        
+        Long id = userRepository.findIdbyemailId(email);
+
+        Optional<User> user = userRepository.findById(id);
+         
+        if(user.isPresent()) {
+            
+            return user.get();
+        }
+        else {
+            throw new EntityNotFoundException();
+        }
+
+    }
+
+    
      
 }
