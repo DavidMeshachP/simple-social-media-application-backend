@@ -5,9 +5,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.zerplabsintern.simplesocialmediawebapplication.dto.UserDto;
@@ -18,18 +15,10 @@ import com.zerplabsintern.simplesocialmediawebapplication.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
-public class UserServiceImpl implements UserService, UserDetailsService {
+public class UserServiceImpl implements UserService {
 
     @Autowired
-    private UserRepository userRepository;    
-
-    @Override
-    public UserDetails loadUserByUsername(String userEmailString) throws UsernameNotFoundException {
-
-        User user = findUserByEmailId(userEmailString);
-
-        return new user;
-    }
+    private UserRepository userRepository;
 
     @Override
     public UserDto save(UserDto userDto) {
