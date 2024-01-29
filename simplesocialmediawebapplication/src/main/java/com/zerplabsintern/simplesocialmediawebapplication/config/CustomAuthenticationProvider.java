@@ -7,18 +7,20 @@ import org.springframework.security.authentication.dao.AbstractUserDetailsAuthen
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Component;
 
 import com.zerplabsintern.simplesocialmediawebapplication.entity.User;
 import com.zerplabsintern.simplesocialmediawebapplication.service.UserService;
 
+
+@Component
 public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
 
     @Autowired
     private UserService userService;
 
     @Override
-    protected void additionalAuthenticationChecks(UserDetails userDetails,
-            UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
+    protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
 
         if( authentication.getCredentials() == null ) {
 
@@ -37,8 +39,7 @@ public class CustomAuthenticationProvider extends AbstractUserDetailsAuthenticat
     }
 
     @Override
-    protected UserDetails retrieveUser(String username, UsernamePasswordAuthenticationToken authentication)
-            throws AuthenticationException {
+    protected UserDetails retrieveUser(String username, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
         
         User user = userService.findUserByEmailId(username);
 

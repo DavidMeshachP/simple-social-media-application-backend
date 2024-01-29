@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.zerplabsintern.simplesocialmediawebapplication.dto.LoginDto;
 import com.zerplabsintern.simplesocialmediawebapplication.service.LoginService;
+import com.zerplabsintern.simplesocialmediawebapplication.service.JwtTokenProvider;
 
 @RestController
 public class LoginController {
@@ -20,53 +21,43 @@ public class LoginController {
     private LoginService loginService;
 
     @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+
+    @Autowired
     private AuthenticationManager authenticationManager;
 
     @PostMapping("/login")
     public ResponseEntity<?> loginCheck(@RequestBody LoginDto loginDto) {
 
+        try {
 
-        try{
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginDto.getEmailIdString(), loginDto.getPassword()));
 
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getEmailIdString(), loginDto.getPassword()));
+            if (authentication.isAuthenticated()) {
 
-        
+                String jwtString = jwtTokenProvider.createToken(loginService.checkAndGetEmailId(loginDto));
 
-        String jwtString = loginService.generateToken(loginService.checkAndGetEmailId(loginDto));
+                return new ResponseEntity<>(jwtString, HttpStatus.OK);
 
-        if(authentication.isAuthenticated()) {
+            }
 
-            return new ResponseEntity<>(jwtString, HttpStatus.OK);
+            else {
+
+                return new ResponseEntity<>("error not authorized give correct credentials", HttpStatus.UNAUTHORIZED);
+
+            }
 
         }
 
-        else {
+        catch (Exception e) {
 
-            return new ResponseEntity<>("error not authorized give correct credentials", HttpStatus.UNAUTHORIZED);
+            System.err.println(e);
 
         }
 
-    }
-
-    catch (Exception e) {
-
-        System.err.println(e);
+        return new ResponseEntity<>("error, not authorized, give correct credentials", HttpStatus.UNAUTHORIZED);
 
     }
 
-
-        // if( jwtString != null ) {
-        //     return new ResponseEntity<>(jwtString,HttpStatus.OK) ;
-        // }
-        // else {
-        //     return new ResponseEntity<>("User credentials not authenticated",HttpStatus.UNAUTHORIZED);
-        // }
-
-        return new ResponseEntity<>("error not authorized give correct credentials", HttpStatus.UNAUTHORIZED);
-
-        
-    }
-
-    
-    
 }
