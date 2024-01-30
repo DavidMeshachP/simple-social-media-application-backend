@@ -10,6 +10,7 @@ import com.zerplabsintern.simplesocialmediawebapplication.dto.LikeDto;
 import com.zerplabsintern.simplesocialmediawebapplication.entity.Likes;
 import com.zerplabsintern.simplesocialmediawebapplication.entity.Post;
 import com.zerplabsintern.simplesocialmediawebapplication.entity.User;
+import com.zerplabsintern.simplesocialmediawebapplication.exception.LikeServiceException;
 import com.zerplabsintern.simplesocialmediawebapplication.repository.LikeRepository;
 import com.zerplabsintern.simplesocialmediawebapplication.repository.PostRepository;
 import com.zerplabsintern.simplesocialmediawebapplication.repository.UserRepository;
@@ -45,7 +46,7 @@ public class LikeServiceImpl implements LikeService {
             return likeDto;
             
         } catch (Exception e) {
-            return null;
+            throw new LikeServiceException("there is a exception while trying to add a like...");
         }
     }
 
@@ -67,10 +68,10 @@ public class LikeServiceImpl implements LikeService {
                 return likeDtos;
             }
             else{
-                return null;
+                throw new LikeServiceException("there is no like by the given id...");
             }
         } catch (Exception e) {
-            return null;
+            throw new LikeServiceException(e.getMessage());
         }
     }
 
@@ -82,10 +83,10 @@ public class LikeServiceImpl implements LikeService {
                 return true;
             }
             else{
-                return false;
+                throw new LikeServiceException("there is no like by the given data, check the given data that was given again...");
             }
         } catch (Exception e) {
-            return false;
+            throw new LikeServiceException("exception occured while trying to remove like ...");
         }
     }
 

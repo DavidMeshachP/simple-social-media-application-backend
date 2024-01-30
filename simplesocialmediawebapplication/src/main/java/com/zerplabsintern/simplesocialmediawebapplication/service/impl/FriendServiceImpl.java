@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.zerplabsintern.simplesocialmediawebapplication.dto.FriendDto;
 import com.zerplabsintern.simplesocialmediawebapplication.entity.Friend;
+import com.zerplabsintern.simplesocialmediawebapplication.exception.FriendServiceException;
 import com.zerplabsintern.simplesocialmediawebapplication.repository.FriendRepository;
 import com.zerplabsintern.simplesocialmediawebapplication.repository.UserRepository;
 import com.zerplabsintern.simplesocialmediawebapplication.service.FriendService;
@@ -37,7 +38,7 @@ public class FriendServiceImpl implements FriendService {
 
             return friendDto;
         } catch (Exception e) {
-            return null;
+            throw new FriendServiceException("exception occured while trying to save Friends....");
         }
     }
 
@@ -49,10 +50,10 @@ public class FriendServiceImpl implements FriendService {
                 return true;
             }
             else{
-                return false;
+                throw new FriendServiceException("the combination of user id and friend id is not present.. ");
             }
         } catch (Exception e) {
-            return false;
+            throw new FriendServiceException("exception occured while trying to save friends...");
         }
     }
 
@@ -61,7 +62,7 @@ public class FriendServiceImpl implements FriendService {
         try {
             return friendRepository.findByfUser_Id(id);
         } catch (Exception e) {
-            return null;
+            throw new FriendServiceException("exception occured when trying to get the friends...");
         }
     }
 

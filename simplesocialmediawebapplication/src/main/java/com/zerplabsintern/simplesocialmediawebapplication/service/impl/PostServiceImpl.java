@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.zerplabsintern.simplesocialmediawebapplication.dto.PostDto;
 import com.zerplabsintern.simplesocialmediawebapplication.entity.Post;
+import com.zerplabsintern.simplesocialmediawebapplication.exception.PostServiceException;
 import com.zerplabsintern.simplesocialmediawebapplication.repository.PostRepository;
 import com.zerplabsintern.simplesocialmediawebapplication.repository.UserRepository;
 import com.zerplabsintern.simplesocialmediawebapplication.service.PostService;
@@ -34,7 +35,7 @@ public class PostServiceImpl implements PostService {
 
         } 
         catch (Exception e) {
-            return null;
+            throw new PostServiceException("Error while saving post, check the data that was sent again..");
         }
 
         postDto.setId(newPost.getId());
@@ -62,27 +63,26 @@ public class PostServiceImpl implements PostService {
 
         }
         else {
-            return null;
+            throw new PostServiceException("no post by this id is found for updating..");
         }
 
     }
 
 
     @Override
-    public Post deletePost(Long id) {
+    public boolean deletePost(Long id) {
         
         try {
             if(postRepository.findById(id).isPresent()) {
                 postRepository.deleteById(id);
+                return true;
             }
             else{
-                return null;
+                throw new PostServiceException("no post found by this id to delete..");
             }
         } catch (Exception e) {
-            return null;
+            throw new PostServiceException(e.getMessage());
         }
-
-        return null;
     }
 
 
@@ -93,11 +93,12 @@ public class PostServiceImpl implements PostService {
             if(postRepository.findById(id).isPresent()){
                 return postRepository.getReferenceById(id);
             }
+            else {
+                throw new PostServiceException("Post could not be found for returning ..");
+            }
         } catch (Exception e) {
-            return null;
+            throw new PostServiceException(e.getMessage());
         }
-
-        return null;
     }
 
 
@@ -109,7 +110,7 @@ public class PostServiceImpl implements PostService {
 
         }
         else {
-            return null;
+            throw new PostServiceException("Post could not be found for returning..");
         }
     }
     

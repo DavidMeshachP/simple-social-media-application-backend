@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.zerplabsintern.simplesocialmediawebapplication.entity.User;
+import com.zerplabsintern.simplesocialmediawebapplication.exception.CustomUserDetailsServiceException;
 import com.zerplabsintern.simplesocialmediawebapplication.service.UserService;
 
 @Service
@@ -20,12 +21,21 @@ public class CustomUserDetailsServiceImpl implements UserDetailsService{
         
         User user = userService.findUserByEmailId(userEmailString);
 
-        UserDetails userDetails = org.springframework.security.core.userdetails.User.builder()
-                .username(user.getEmailId())
-                .password(user.getPassword())
-                .build();
+        if( user == null ) {
+            throw new CustomUserDetailsServiceException("no user found by the given details....");
+        }
 
-        return userDetails;
+        else {
+
+            UserDetails userDetails = org.springframework.security.core.userdetails.User.builder()
+                    .username(user.getEmailId())
+                    .password(user.getPassword())
+                    .build();
+    
+            return userDetails;
+
+        }
+
     } 
     
 }

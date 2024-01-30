@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.zerplabsintern.simplesocialmediawebapplication.dto.PostImagesDto;
 import com.zerplabsintern.simplesocialmediawebapplication.entity.PostImages;
+import com.zerplabsintern.simplesocialmediawebapplication.exception.PostImagesServiceException;
 import com.zerplabsintern.simplesocialmediawebapplication.repository.PostImagesRepository;
 import com.zerplabsintern.simplesocialmediawebapplication.repository.PostRepository;
 import com.zerplabsintern.simplesocialmediawebapplication.service.PostImagesService;
@@ -32,7 +33,7 @@ public class PostImagesServiceImpl implements PostImagesService {
             return postImagesDto;
             
         } catch (Exception e) {
-            return null;
+            throw new PostImagesServiceException("exception while trying to save Post Images...");
         }
     }
 
@@ -40,10 +41,10 @@ public class PostImagesServiceImpl implements PostImagesService {
     public boolean deletePostImages( Long id ) {
         try {
             postImagesRepository.deleteById(postImagesRepository.getReferenceById(id).getId());;
+            return true;
         } catch (Exception e) {
-            return false;
+            throw new PostImagesServiceException("there is a exception while trying to delete the postImages... ");
         }
-        return true;
     }
 
     @Override
@@ -60,7 +61,7 @@ public class PostImagesServiceImpl implements PostImagesService {
 
 
         } catch (Exception e) {
-            return null;
+            throw new PostImagesServiceException("there is a error while updating the post Images...");
         }
     }
 

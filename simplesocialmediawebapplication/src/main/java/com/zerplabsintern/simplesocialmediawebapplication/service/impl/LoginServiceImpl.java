@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.zerplabsintern.simplesocialmediawebapplication.dto.LoginDto;
 import com.zerplabsintern.simplesocialmediawebapplication.entity.User;
+import com.zerplabsintern.simplesocialmediawebapplication.exception.LoginServiceException;
 import com.zerplabsintern.simplesocialmediawebapplication.repository.UserRepository;
 import com.zerplabsintern.simplesocialmediawebapplication.service.LoginService;
 
@@ -26,7 +27,7 @@ public class LoginServiceImpl implements LoginService {
             return user.getEmailId();
         }
         else {
-            return null;
+            throw new LoginServiceException("no user found, could not login ...");
         }
 
     }
@@ -40,7 +41,7 @@ public class LoginServiceImpl implements LoginService {
             return jwtTokenProviderImpl.createToken(user.getEmailId());
         }
         else {
-            return null;
+            throw new LoginServiceException("no user found, please check the details...");
         }
     }
 

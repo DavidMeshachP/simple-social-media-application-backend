@@ -9,10 +9,9 @@ import org.springframework.stereotype.Service;
 
 import com.zerplabsintern.simplesocialmediawebapplication.dto.UserDto;
 import com.zerplabsintern.simplesocialmediawebapplication.entity.User;
+import com.zerplabsintern.simplesocialmediawebapplication.exception.UserServiceException;
 import com.zerplabsintern.simplesocialmediawebapplication.repository.UserRepository;
 import com.zerplabsintern.simplesocialmediawebapplication.service.UserService;
-
-import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -36,7 +35,7 @@ public class UserServiceImpl implements UserService {
         Long id = userRepository.findIdbyemailId(userDto.getEmailId());
 
         if(id != null){
-            return null;
+            throw new UserServiceException("User already exists, cannot update..");
         }
         else{
             userRepository.save(newUser);
@@ -79,12 +78,12 @@ public class UserServiceImpl implements UserService {
 
             }
             else {
-                return null;
+                throw new UserServiceException("User not found to update, try updating a different user..");
             }
 
         }
         catch (Exception e) {
-            return null;
+            throw new UserServiceException(e.getMessage());
         }
         return userDto;
     }
@@ -100,11 +99,11 @@ public class UserServiceImpl implements UserService {
                 return true;
             }
             else {
-                return false;
+                throw new UserServiceException("User not found to delete...");
             }
             
         } catch (Exception e) {
-            return false;
+            throw new UserServiceException(e.getMessage());
         }
     }
 
@@ -115,13 +114,22 @@ public class UserServiceImpl implements UserService {
             return userRepository.getReferenceById(id);
         }
         else{
-            return null;
+            throw new UserServiceException("No user Present by this id.... ");
         }
     }
 
     @Override
     public List<User> getAllUser(String name) {
-        return userRepository.findByName(name);
+
+        List<User> users = userRepository.findByName(name);
+
+        if(users.size() == 0 ) {
+            throw new UserServiceException("no user present with this name..");
+        }
+
+        else {
+            return users;
+        }
     } 
 
     @Override
@@ -129,7 +137,15 @@ public class UserServiceImpl implements UserService {
 
         Long id = userRepository.findIdbyemailId(email);
 
-        return userRepository.getReferenceById(id).getEmailId();
+        if ( id != null ) {
+            
+            return userRepository.getReferenceById(id).getEmailId();
+        }
+
+        else {
+            throw new UserServiceException("No user By this email Id ");
+        }
+
 
     }
 
@@ -145,7 +161,7 @@ public class UserServiceImpl implements UserService {
             return user.get();
         }
         else {
-            throw new EntityNotFoundException();
+            throw new UserServiceException("No User found ..");
         }
 
     }
