@@ -24,18 +24,54 @@ public class UserServiceImpl implements UserService {
 
         User newUser = new User();
 
-        newUser.setDateOfBirth(userDto.getDateOfBirth());
+        if( userDto.getDateOfBirth() != null ){
+
+            newUser.setDateOfBirth(userDto.getDateOfBirth());
+        }
+        else {
+            throw new UserServiceException("date of birth field cannot be null, check the details that was sent again..");
+        }
+
         newUser.setDescription(userDto.getDescription());
-        newUser.setGender(userDto.getGender());
-        newUser.setEmailId(userDto.getEmailId());
-        newUser.setName(userDto.getName());
-        newUser.setPassword(userDto.getPassword());
+
+        if( userDto.getGender() != null ) {
+
+            newUser.setGender(userDto.getGender());
+        }
+        else {
+            throw new UserServiceException("gender field cannot be null, check the details that was sent again..");
+        }
+
+        if( userDto.getEmailId() != null ) {
+
+            newUser.setEmailId(userDto.getEmailId());
+        }
+        else {
+            throw new UserServiceException("email_id field cannot be null, check the details that was sent again..");
+        }
+
+        if( userDto.getName() != null ) {
+
+            newUser.setName(userDto.getName());
+        }
+        else {
+            throw new UserServiceException("name field cannot be null, check the details that was sent again..");
+        }
+
+        if( userDto.getPassword() != null ) {
+
+            newUser.setPassword(userDto.getPassword());
+        }
+        else {
+            throw new UserServiceException("password field cannot be null, check the details that was sent again..");
+        }
+
         newUser.setImage(Base64.getDecoder().decode(userDto.getImage()));
 
         Long id = userRepository.findIdbyemailId(userDto.getEmailId());
 
         if(id != null){
-            throw new UserServiceException("User already exists, cannot update..");
+            throw new UserServiceException("User already exists, cannot insert a user.."); 
         }
         else{
             userRepository.save(newUser);
@@ -55,6 +91,10 @@ public class UserServiceImpl implements UserService {
                 if(userDto.getId() != null) {
                     newUser.setId(id);
                 }
+                else {
+                    throw new UserServiceException("id cannot be null, check the data that was sent again..");
+                }
+
                 if(userDto.getDateOfBirth() !=null){
                     newUser.setDateOfBirth(userDto.getDateOfBirth());
                 }
@@ -95,7 +135,13 @@ public class UserServiceImpl implements UserService {
 
             if (userRepository.findById(id).isPresent()) {
 
-                userRepository.deleteById(id);
+                UserDto userDto = new UserDto();
+
+                userDto.setId(id);
+                userDto.setActive(false);
+
+                updateUser(id, userDto);
+
                 return true;
             }
             else {
@@ -166,6 +212,4 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    
-     
 }

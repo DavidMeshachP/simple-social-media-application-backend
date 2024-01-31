@@ -63,6 +63,9 @@ public class User {
 
     @Column(name = "password")
     private String password;
+
+    @Column(name = "is_active")
+    private boolean isActive;
     
     @Column(name = "created")
     @CreationTimestamp
@@ -77,10 +80,11 @@ public class User {
 
     }
 
-    public User(List<Friend> friends, List<Post> posts, List<Likes> likes, List<Comment> comments, Long id, String name,
-            String emailId, Gender gender, byte[] image, Date dateOfBirth, String description, String password,
-            ZonedDateTime createdOn, ZonedDateTime modifiedOn) {
+    public User(List<Friend> friends, List<Friend> friends2, List<Post> posts, List<Likes> likes,
+            List<Comment> comments, Long id, String name, String emailId, Gender gender, byte[] image, Date dateOfBirth,
+            String description, String password, boolean isActive, ZonedDateTime createdOn, ZonedDateTime modifiedOn) {
         this.friends = friends;
+        this.friends2 = friends2;
         this.posts = posts;
         this.likes = likes;
         this.comments = comments;
@@ -92,6 +96,7 @@ public class User {
         this.dateOfBirth = dateOfBirth;
         this.description = description;
         this.password = password;
+        this.isActive = isActive;
         this.createdOn = createdOn;
         this.modifiedOn = modifiedOn;
     }
@@ -175,6 +180,13 @@ public class User {
     public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
-   
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean isActive) {
+        this.isActive = isActive;
+    }   
 
 }

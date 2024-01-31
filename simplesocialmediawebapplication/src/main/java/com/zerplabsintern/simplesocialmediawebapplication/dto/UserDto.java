@@ -26,12 +26,14 @@ public class UserDto {
 
     private String password;
 
+    private boolean isActive;
+
     public UserDto() {
         
     }
 
     public UserDto(Long id, String name, String emailId, Gender gender, String image, Date dateOfBirth,
-            String description, String password) {
+            String description, String password, boolean isActive) {
         this.id = id;
         this.name = name;
         this.emailId = emailId;
@@ -40,6 +42,7 @@ public class UserDto {
         this.dateOfBirth = dateOfBirth;
         this.description = description;
         this.password = password;
+        this.isActive = isActive;
     }
 
     public Long getId() {
@@ -105,5 +108,13 @@ public class UserDto {
     public void setPassword(String password) {
         this.password = password;
     }
-    
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean isActive) {
+        this.isActive = isActive;
+    }
+
 }

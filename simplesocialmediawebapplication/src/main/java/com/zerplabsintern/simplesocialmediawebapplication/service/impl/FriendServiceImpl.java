@@ -27,10 +27,29 @@ public class FriendServiceImpl implements FriendService {
 
             Friend newFriend = new Friend();
 
-            newFriend.setId(friendDto.getId());
-            newFriend.setfUser(userRepository.getReferenceById(friendDto.getUserId()));
-            newFriend.setfUser2(userRepository.getReferenceById(friendDto.getFriendId()));
-            newFriend.setStatus(friendDto.getStatus());
+            if(friendDto.getUserId() != null ) {
+
+                newFriend.setfUser(userRepository.getReferenceById(friendDto.getUserId()));
+            }
+            else {
+                throw new FriendServiceException("userId field cannot be empty, check the details that was sent..");
+            }
+
+            if(friendDto.getFriendId() != null ) {
+
+                newFriend.setfUser2(userRepository.getReferenceById(friendDto.getFriendId()));
+            }
+            else {
+                throw new FriendServiceException("friendId field cannot be empty, update the details that was sent.");
+            }
+
+            if(friendDto.getStatus() != null ) {
+                
+                newFriend.setStatus(friendDto.getStatus());
+            }
+            else {
+                throw new FriendServiceException("status of the friend cannot be null, update the field..");
+            }
             
             friendRepository.save(newFriend);
 
@@ -60,7 +79,23 @@ public class FriendServiceImpl implements FriendService {
     @Override
     public List<Friend> getFriends(Long id) {
         try {
-            return friendRepository.findByfUser_Id(id);
+
+            List<Friend> friends = friendRepository.findByfUser_Id(id);
+
+            if( friends == null ) {
+                List<Friend> friends2 = friendRepository.findByfFriend_id(id);
+
+                if( friends2 == null ) {
+                    return null;
+                }
+                else {
+                    return friends2;
+                }
+            }
+            else {
+                return friends;
+            }
+
         } catch (Exception e) {
             throw new FriendServiceException("exception occured when trying to get the friends...");
         }

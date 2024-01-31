@@ -4,7 +4,7 @@ public class PostImagesDto {
 
     private Long id;
 
-    private int postId;
+    private Long postId;
 
     private byte[] image;
 
@@ -12,7 +12,7 @@ public class PostImagesDto {
 
     }
 
-    public PostImagesDto(Long id, int postId, byte[] image) {
+    public PostImagesDto(Long id, Long postId, byte[] image) {
         this.id = id;
         this.postId = postId;
         this.image = image;
@@ -26,11 +26,11 @@ public class PostImagesDto {
         this.id = id;
     }
 
-    public int getPostId() {
+    public Long getPostId() {
         return postId;
     }
 
-    public void setPostId(int postId) {
+    public void setPostId(Long postId) {
         this.postId = postId;
     }
 

@@ -25,9 +25,22 @@ public class PostImagesServiceImpl implements PostImagesService {
 
             PostImages postImages = new PostImages();
 
-            postImages.setId(postImagesDto.getId());
-            postImages.setImage(postImagesDto.getImage());
-            postImages.setpIPost(postRepository.getReferenceById(postImagesDto.getId()));
+            if(postImagesDto.getImage() != null ) {
+
+                postImages.setImage(postImagesDto.getImage());
+            }
+            else {
+                throw new PostImagesServiceException("image field cannot be null ");
+            }
+
+            if(postImagesDto.getPostId() != null ) {
+
+                postImages.setpIPost(postRepository.getReferenceById(postImagesDto.getId()));
+            }
+            else {
+                throw new PostImagesServiceException("postId field cannot be null");
+            }
+
             postImagesRepository.save(postImages);
 
             return postImagesDto;
@@ -40,8 +53,14 @@ public class PostImagesServiceImpl implements PostImagesService {
     @Override
     public boolean deletePostImages( Long id ) {
         try {
-            postImagesRepository.deleteById(postImagesRepository.getReferenceById(id).getId());;
-            return true;
+            if(postImagesRepository.findById(id).isPresent()){
+
+                postImagesRepository.deleteById(id);;
+                return true;
+            }
+            else {
+                throw new PostImagesServiceException("the id given does not correspond to any of the post images, so please check the id and send the request again ");
+            }
         } catch (Exception e) {
             throw new PostImagesServiceException("there is a exception while trying to delete the postImages... ");
         }
@@ -53,8 +72,19 @@ public class PostImagesServiceImpl implements PostImagesService {
         try {
             PostImages postImages = new PostImages();
 
-            postImages.setId(id);
-            postImages.setImage(postImagesDto.getImage());
+            if(postImagesDto.getId() != null ){
+
+                postImages.setId(id);
+            }
+            else {
+                throw new PostImagesServiceException("id cannot be null, check the data that was sent again..");
+            }
+
+            if(postImagesDto.getImage() != null ) {
+
+                postImages.setImage(postImagesDto.getImage());
+            }
+            
             postImagesRepository.save(postImages);
 
             return postImagesDto;

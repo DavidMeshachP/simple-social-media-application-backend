@@ -8,8 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.zerplabsintern.simplesocialmediawebapplication.dto.LikeDto;
 import com.zerplabsintern.simplesocialmediawebapplication.entity.Likes;
-import com.zerplabsintern.simplesocialmediawebapplication.entity.Post;
-import com.zerplabsintern.simplesocialmediawebapplication.entity.User;
 import com.zerplabsintern.simplesocialmediawebapplication.exception.LikeServiceException;
 import com.zerplabsintern.simplesocialmediawebapplication.repository.LikeRepository;
 import com.zerplabsintern.simplesocialmediawebapplication.repository.PostRepository;
@@ -34,11 +32,23 @@ public class LikeServiceImpl implements LikeService {
     public LikeDto addLike(LikeDto likeDto) {
         try {
             Likes newLike = new Likes();
-            newLike.setId(likeDto.getId());
-            User user = userRepository.findById(likeDto.getUserId()).orElseThrow(() -> new EntityNotFoundException("User not found"));
-            Post post = postRepository.findById(likeDto.getPostId()).orElseThrow(() -> new EntityNotFoundException("Post not found"));
-            newLike.setlPost(post);
-            newLike.setlUser(user);
+
+            if( likeDto.getUserId() != 0L ) {
+
+                newLike.setlUser(userRepository.getReferenceById(likeDto.getUserId()));
+            }
+            else {
+                throw new LikeServiceException("user is not found, give correct values ");
+            }
+
+            if( likeDto.getPostId() != 0L ) {
+
+                newLike.setlPost(postRepository.findById(likeDto.getPostId()).orElseThrow(() -> new EntityNotFoundException("Post not found")));;
+            }
+            else {
+                throw new LikeServiceException("the given post id is not found, give correct values");
+            }
+
             likeRepository.save(newLike);
 
             likeDto.setId(newLike.getId());

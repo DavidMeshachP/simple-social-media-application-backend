@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.zerplabsintern.simplesocialmediawebapplication.dto.PostDto;
 import com.zerplabsintern.simplesocialmediawebapplication.entity.Post;
+import com.zerplabsintern.simplesocialmediawebapplication.entity.User;
 import com.zerplabsintern.simplesocialmediawebapplication.exception.PostServiceException;
 import com.zerplabsintern.simplesocialmediawebapplication.repository.PostRepository;
 import com.zerplabsintern.simplesocialmediawebapplication.repository.UserRepository;
@@ -28,8 +29,22 @@ public class PostServiceImpl implements PostService {
         try {
 
             newPost.setCaption( postDto.getCaption());
-            newPost.setMode(postDto.getMode());
-            newPost.setpUser(userRepository.getReferenceById(postDto.getUserId()));
+
+            if(postDto.getMode() != null ) {
+
+                newPost.setMode(postDto.getMode());
+            }
+            else {
+                throw new PostServiceException("mode field cannot be null, check the data that was sent again");
+            }
+
+            if(postDto.getUserId() != null ) {
+                
+                newPost.setpUser(userRepository.getReferenceById(postDto.getUserId()));
+            }
+            else{
+                throw new PostServiceException("userId cannot be null, check the data that was sent again..");
+            }
 
             postRepository.save(newPost);
 
@@ -51,11 +66,41 @@ public class PostServiceImpl implements PostService {
 
             Post newPost = new Post();
 
-            newPost.setCaption( postDto.getCaption());
-            newPost.setId(postDto.getId());
-            newPost.setMode(postDto.getMode());
-            newPost.setpUser(userRepository.getReferenceById(postDto.getUserId()));
-            newPost.setCreated(postRepository.getReferenceById(postDto.getId()).getCreated());
+            if(postDto.getCaption() != null ) {
+
+                newPost.setCaption( postDto.getCaption());
+            }
+
+            if( postDto.getUserId() != null ) {
+
+                User user = userRepository.findById(postDto.getUserId()).get();
+
+                if(user != null ) {
+
+                    newPost.setpUser(user);
+                }
+                else {
+                    throw new PostServiceException("no such user, check the data again ");
+                }
+            }
+            else {
+                throw new PostServiceException("user id cannot be null, check the data that was sent again..");
+            }
+
+            if(postDto.getId() != null ) {
+
+                newPost.setId(postDto.getId());
+            }
+            else {
+                throw new PostServiceException("id cannot be null, check the data that was sent again..");
+            }
+
+            if(postDto.getMode() != null ) {
+
+                newPost.setMode(postDto.getMode());
+            }
+            
+            newPost.setCreated(postRepository.findById(postDto.getId()).get().getCreated());
 
             postRepository.save(newPost);
 

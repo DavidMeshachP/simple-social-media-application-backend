@@ -8,15 +8,11 @@ import org.springframework.stereotype.Service;
 
 import com.zerplabsintern.simplesocialmediawebapplication.dto.CommentDto;
 import com.zerplabsintern.simplesocialmediawebapplication.entity.Comment;
-import com.zerplabsintern.simplesocialmediawebapplication.entity.Post;
-import com.zerplabsintern.simplesocialmediawebapplication.entity.User;
 import com.zerplabsintern.simplesocialmediawebapplication.exception.CommentServiceException;
 import com.zerplabsintern.simplesocialmediawebapplication.repository.CommentRepository;
 import com.zerplabsintern.simplesocialmediawebapplication.repository.PostRepository;
 import com.zerplabsintern.simplesocialmediawebapplication.repository.UserRepository;
 import com.zerplabsintern.simplesocialmediawebapplication.service.CommentService;
-
-import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class CommentServiceImpl implements CommentService {
@@ -34,19 +30,39 @@ public class CommentServiceImpl implements CommentService {
     public CommentDto addComment(CommentDto commentDto) {
         try {
             Comment newComment = new Comment();
-            newComment.setComment(commentDto.getComment());
-            User user = userRepository.findById(commentDto.getUserId())
-                    .orElseThrow(() -> new EntityNotFoundException("User not found"));
-            Post post = postRepository.findById(commentDto.getPostId())
-                    .orElseThrow(() -> new EntityNotFoundException("Post not found"));
-            newComment.setcUser(user);
-            newComment.setcPost(post);
+
+            if(commentDto.getComment() != null ) {
+
+                newComment.setComment(commentDto.getComment());
+            }
+            else {
+                throw new CommentServiceException("comment cannot be null, check the data that was sent again");
+            }
+
+            if(commentDto.getUserId() != null ) {
+
+                newComment.setcUser(userRepository.findById(commentDto.getUserId()).get());
+                
+            }
+            else {
+                throw new CommentServiceException("userId cannot be null, check the user id that was sent again");
+            }
+
+            if( commentDto.getPostId() != null ) {
+
+                newComment.setcPost(postRepository.findById(commentDto.getPostId()).get());
+            }
+            else {
+                throw new CommentServiceException("post id cannot be cannot be found ");
+            }
+
             commentRepository.save(newComment);
+
             commentDto.setId(newComment.getId());
+
             return commentDto;
         } catch (Exception e) {
-            throw new CommentServiceException(
-                    "exception occured while trying to save the comment, check the details that was sent again....");
+            throw new CommentServiceException("exception occured while trying to save the comment, check the details that was sent again....");
         }
     }
 
@@ -56,13 +72,13 @@ public class CommentServiceImpl implements CommentService {
             if (commentRepository.findById(id).isPresent()) {
 
                 commentRepository.deleteById(id);
+
                 return true;
             } else {
                 throw new CommentServiceException("there is no comment by that id, check your details again...");
             }
         } catch (Exception e) {
-            throw new CommentServiceException(
-                    "exception occured when trying to remove comment, check the details that was sent again....");
+            throw new CommentServiceException("exception occured when trying to remove comment, check the details that was sent again....");
         }
     }
 
@@ -71,10 +87,19 @@ public class CommentServiceImpl implements CommentService {
         try {
             Comment newComment = new Comment();
 
-            newComment.setId(commentDto.getId());
-            newComment.setComment(commentDto.getComment());
-            newComment.setcPost(postRepository.getReferenceById(commentDto.getPostId()));
-            newComment.setcUser(userRepository.getReferenceById(commentDto.getUserId()));
+            if(commentDto.getId() != null) {
+
+                newComment.setId(commentDto.getId());
+            }
+            else {
+                throw new CommentServiceException("id field cannot be null");
+            }
+
+            if(commentDto.getComment() != null ) {
+
+                newComment.setComment(commentDto.getComment());
+            }
+            
             newComment.setCreated(commentRepository.getReferenceById(commentDto.getId()).getCreated());
 
             commentRepository.save(newComment);
@@ -82,8 +107,7 @@ public class CommentServiceImpl implements CommentService {
             return commentDto;
 
         } catch (Exception e) {
-            throw new CommentServiceException(
-                    "exception occured while trying to update comment, check the details that was sent again....");
+            throw new CommentServiceException("exception occured while trying to update comment, check the details that was sent again....");
         }
     }
 
@@ -93,8 +117,7 @@ public class CommentServiceImpl implements CommentService {
             List<Comment> comment = commentRepository.findBycPost_Id(id);
 
             if (comment.size() == 0) {
-                throw new CommentServiceException(
-                        "the comment could not be found, please check the details that was sent again... ");
+                throw new CommentServiceException("the comment could not be found, please check the details that was sent again... ");
             }
 
             else {
