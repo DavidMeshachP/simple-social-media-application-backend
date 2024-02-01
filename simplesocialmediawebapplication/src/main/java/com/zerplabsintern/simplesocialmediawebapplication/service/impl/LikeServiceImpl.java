@@ -61,11 +61,12 @@ public class LikeServiceImpl implements LikeService {
     }
 
     @Override
-    public List<LikeDto> getLike(Long id) {
+    public List<LikeDto> getLike(Long postId) {
         try {
-            if(likeRepository.existsBylPostId(id)){
+            if(!likeRepository.findLikesBylPost(postId).isEmpty()){
                 List<LikeDto> likeDtos = new ArrayList<>();
-                List<Likes> like = likeRepository.findLikesBylPost(postRepository.getReferenceById(id));
+                List<Likes> like = likeRepository.findLikesBylPost(postId);
+
                 for(Likes likes : like ) {
                     LikeDto likeDto = new LikeDto();
 
@@ -75,10 +76,11 @@ public class LikeServiceImpl implements LikeService {
 
                     likeDtos.add(likeDto);
                 }
+                
                 return likeDtos;
             }
             else{
-                throw new LikeServiceException("there is no like by the given id...");
+                throw new LikeServiceException("there is no like by the given post id...");
             }
         } catch (Exception e) {
             throw new LikeServiceException(e.getMessage());

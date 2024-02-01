@@ -99,6 +99,14 @@ public class CommentServiceImpl implements CommentService {
 
                 newComment.setComment(commentDto.getComment());
             }
+
+            if( commentDto.getPostId() != null ) {
+                newComment.setcPost(postRepository.findById(commentDto.getPostId()).get());
+            }
+
+            if ( commentDto.getUserId() != null ) {
+                newComment.setcUser(userRepository.findById(commentDto.getUserId()).get());
+            }
             
             newComment.setCreated(commentRepository.getReferenceById(commentDto.getId()).getCreated());
 

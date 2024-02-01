@@ -60,11 +60,20 @@ public class UserServiceImpl implements UserService {
 
         if( userDto.getPassword() != null ) {
 
-            newUser.setPassword(userDto.getPassword());
+            if(userDto.getPassword().length() > 20 ) {
+                throw new UserServiceException("password length more than the limit reduce it to less than 20 ");
+            }
+            else {
+                
+                newUser.setPassword(userDto.getPassword());
+            }
+
         }
         else {
             throw new UserServiceException("password field cannot be null, check the details that was sent again..");
         }
+
+        newUser.setActive(true);
 
         newUser.setImage(Base64.getDecoder().decode(userDto.getImage()));
 
@@ -112,6 +121,12 @@ public class UserServiceImpl implements UserService {
                 }
                 if(userDto.getImage() != null) {
                     newUser.setImage(Base64.getDecoder().decode(userDto.getImage()));
+                }
+
+                if( userRepository.findById(id).get().isActive() == true && userDto.isActive() == false ) {
+
+                    newUser.setActive(false);
+
                 }
 
                 userRepository.save(newUser);

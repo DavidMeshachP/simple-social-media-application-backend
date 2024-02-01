@@ -28,7 +28,7 @@ public class LikeController {
         try {
             return new ResponseEntity<>(likeService.getLike(id),HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>("check check checkkk",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("check check checkkk" + e.getMessage(),HttpStatus.BAD_REQUEST);
         }
     }
 

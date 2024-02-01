@@ -15,10 +15,10 @@ public interface FriendRepository extends JpaRepository<Friend, Long > {
     @Query(value = "select * from Friends where friend_id = ?1", nativeQuery = true)
     List<Friend> findByfFriend_id(Long id );
 
-    @Query(value = "Select Exists(Select * from Friends where user_id = ?1)", nativeQuery = true)
-    boolean existsByfUser_Id(Long userId);
+    @Query(value = "Select * from Friends where user_id = ?1 and friend_id = ?2", nativeQuery = true)
+    Friend existsByfUser_Id(Long userId, Long friendId);
 
-    @Query(value = "Select friend_id from Friends where user_id = ?1", nativeQuery = true)
-    Friend findFriendIdByfUser_Id(Long userId);
+    @Query(value = "Select id from Friends where user_id = ?1 and friend_id = ?2", nativeQuery = true)
+    Long findIdByfUser_idfFriend_id(Long userId, Long friendId);
     
 }

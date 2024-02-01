@@ -64,8 +64,10 @@ public class FriendServiceImpl implements FriendService {
     @Override
     public boolean deleteFriends(Long userId, Long friendId) {
         try {
-            if(friendRepository.existsByfUser_Id(userId)){
-                friendRepository.deleteById(friendRepository.findFriendIdByfUser_Id(userId).getId());
+            if(friendRepository.existsByfUser_Id(userId,friendId) != null){
+                
+                friendRepository.deleteById(friendRepository.findIdByfUser_idfFriend_id(userId, friendId));
+
                 return true;
             }
             else{
@@ -82,7 +84,7 @@ public class FriendServiceImpl implements FriendService {
 
             List<Friend> friends = friendRepository.findByfUser_Id(id);
 
-            if( friends == null ) {
+            if( friends.isEmpty() ) {
                 List<Friend> friends2 = friendRepository.findByfFriend_id(id);
 
                 if( friends2 == null ) {
