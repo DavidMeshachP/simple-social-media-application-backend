@@ -4,10 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.zerplabsintern.simplesocialmediawebapplication.dto.PostImagesDto;
@@ -28,21 +28,21 @@ public class PostImagesController {
         }
     }
 
-    @PutMapping("/post-images/{id}")
-    public ResponseEntity<?> updatePostImages(@RequestParam Long id,@RequestBody PostImagesDto postImagesDto) {
+    @DeleteMapping("/post-images/{id}")
+    public ResponseEntity<?> deletePostImages(@PathVariable Long id) {
         try {
-            return new ResponseEntity<>(postImagesService.updatePostImage(id, postImagesDto), HttpStatus.OK);
+            return new ResponseEntity<>(postImagesService.deletePostImages(id), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("Unable to save the images..", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @DeleteMapping("/post-images/{id}")
-    public ResponseEntity<?> deletePostImages(@RequestParam Long id) {
+    @GetMapping("/post-images/{id}") 
+    public ResponseEntity<?> getPostImages(@PathVariable Long id ) {
         try {
-            return new ResponseEntity<>(postImagesService.deletePostImages(id), HttpStatus.OK);
+            return new ResponseEntity<>(postImagesService.getPostImages(id),HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>("Unable to save the images..", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Unable to get the posts",HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     

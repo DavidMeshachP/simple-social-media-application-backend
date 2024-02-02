@@ -10,7 +10,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "post_images")
+@Table(name = "posts_images")
 
 public class PostImages {
     

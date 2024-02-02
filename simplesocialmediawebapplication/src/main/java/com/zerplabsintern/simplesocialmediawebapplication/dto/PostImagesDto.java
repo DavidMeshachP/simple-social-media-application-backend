@@ -6,13 +6,13 @@ public class PostImagesDto {
 
     private Long postId;
 
-    private byte[] image;
+    private String image;
 
     public PostImagesDto() {
 
     }
 
-    public PostImagesDto(Long id, Long postId, byte[] image) {
+    public PostImagesDto(Long id, Long postId, String image) {
         this.id = id;
         this.postId = postId;
         this.image = image;
@@ -34,11 +34,11 @@ public class PostImagesDto {
         this.postId = postId;
     }
 
-    public byte[] getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
 

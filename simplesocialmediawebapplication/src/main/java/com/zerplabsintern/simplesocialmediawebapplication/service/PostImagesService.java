@@ -1,6 +1,9 @@
 package com.zerplabsintern.simplesocialmediawebapplication.service;
 
+import java.util.List;
+
 import com.zerplabsintern.simplesocialmediawebapplication.dto.PostImagesDto;
+import com.zerplabsintern.simplesocialmediawebapplication.entity.PostImages;
 
 public interface PostImagesService {
 
@@ -8,6 +11,6 @@ public interface PostImagesService {
 
     boolean deletePostImages(Long id);
 
-    PostImagesDto updatePostImage(Long id, PostImagesDto postImagesDto);
+    List<PostImages> getPostImages(Long id);
     
 }
