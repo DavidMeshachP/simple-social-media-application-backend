@@ -89,7 +89,7 @@ public class UserServiceImpl implements UserService {
 
                 try {
                     
-                    newUser.setImage(Base64.getDecoder().decode(compressImageService.compressImage(userDto.getImage(), 0, 0, 0.7f)));
+                    newUser.setImage(Base64.getDecoder().decode(compressImageService.compressImage(userDto.getImage(), 100, 100, 0.7f)));
 
 
                 } catch (Exception e) {

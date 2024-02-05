@@ -43,7 +43,7 @@ public class PostImagesServiceImpl implements PostImagesService {
                     try {
                         postImages.setImage(Base64.getDecoder().decode(compressImageService.compressImage(postImagesDto.getImage(), 0, 0, 0.7f)));
                     } catch (Exception e) {
-                        throw new UserServiceException("there is a error while compressing a image.");
+                        throw new UserServiceException("there is a error while compressing a image. "+ e);
                     }
                 }
             }
