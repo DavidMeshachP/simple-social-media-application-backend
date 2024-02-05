@@ -2,10 +2,14 @@ package com.zerplabsintern.simplesocialmediawebapplication.entity;
 
 import java.sql.Date;
 import java.time.ZonedDateTime;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.zerplabsintern.simplesocialmediawebapplication.enums.Gender;
 
@@ -21,7 +25,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails{
 
     @OneToMany(mappedBy = "fUser")
     private List<Friend> friends;
@@ -187,6 +191,42 @@ public class User {
 
     public void setActive(boolean isActive) {
         this.isActive = isActive;
-    }   
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        
+        return Collections.emptyList();
+    }
+
+    @Override
+    public String getUsername() {
+
+        return emailId;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        
+        return true;
+    }
 
 }

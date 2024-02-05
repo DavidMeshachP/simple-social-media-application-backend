@@ -1,83 +1,125 @@
-// package com.zerplabsintern.simplesocialmediawebapplication.config;
+package com.zerplabsintern.simplesocialmediawebapplication.config;
 
-// import java.io.IOException;
+import java.io.IOException;
 
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-// import org.springframework.security.core.context.SecurityContextHolder;
-// import org.springframework.security.core.userdetails.UserDetails;
-// import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-// import org.springframework.stereotype.Component;
-// import org.springframework.util.StringUtils;
-// import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.preauth.websphere.WebSpherePreAuthenticatedWebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
 
-// import com.zerplabsintern.simplesocialmediawebapplication.service.JwtTokenProvider;
-// import com.zerplabsintern.simplesocialmediawebapplication.service.impl.CustomUserDetailsServiceImpl;
+import com.zerplabsintern.simplesocialmediawebapplication.service.JwtTokenProvider;
+import com.zerplabsintern.simplesocialmediawebapplication.service.impl.CustomUserDetailsServiceImpl;
 
-// import jakarta.servlet.FilterChain;
-// import jakarta.servlet.ServletException;
-// import jakarta.servlet.http.HttpServletRequest;
-// import jakarta.servlet.http.HttpServletResponse;
+import io.micrometer.common.util.StringUtils;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 
-// @Component
-// public class JwtAuthenticationFilter extends OncePerRequestFilter {
+@Component
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-//     private JwtTokenProvider jwtTokenProvider;
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
 
-//     private CustomUserDetailsServiceImpl customUserDetailsServiceImpl;
+    @Autowired
+    private CustomUserDetailsServiceImpl customUserDetailsServiceImpl;
 
-//     @Autowired
-//     public void setJwtTokenProvider(JwtTokenProvider jwtTokenProvider) {
-//         this.jwtTokenProvider = jwtTokenProvider;
-//     }
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-//     @Autowired
-//     public void setCustomUserDetailsServiceImpl(CustomUserDetailsServiceImpl customUserDetailsServiceImpl) {
-//         this.customUserDetailsServiceImpl = customUserDetailsServiceImpl;
-//     }
+        final String authHeader = request.getHeader("Authorization");
+        final String jwt;
+        final String userEmail;
 
-//     @Override
-//     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        if(StringUtils.isEmpty(authHeader) || !org.apache.commons.lang3.StringUtils.startsWith(authHeader, "Bearer ")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
-//         try {
+        jwt = authHeader.substring(7);
+        userEmail = jwtTokenProvider.extractUserName(jwt);
 
-//             String jwt = extractJwtFromRequest(request);
+        if(StringUtils.isNotEmpty(userEmail) && SecurityContextHolder.getContext().getAuthentication() == null ) {
+            UserDetails userDetails = customUserDetailsServiceImpl.loadUserByUsername(userEmail);
 
-//             if (StringUtils.hasText(jwt) && jwtTokenProvider.validateToken(jwt)) {
+            if(jwtTokenProvider.isTokenValid(userEmail, userDetails)) {
+                SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
 
-//                 String userEmail = jwtTokenProvider.getUserEmailFromToken(jwt);
+                UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken( userDetails, null, userDetails.getAuthorities() );
 
-//                 UserDetails userDetails = customUserDetailsServiceImpl.loadUserByUsername(userEmail);
+                token.setDetails(new WebSpherePreAuthenticatedWebAuthenticationDetailsSource().buildDetails(request));
 
-//                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-//                         userDetails, null, null);
-//                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                securityContext.setAuthentication(token);
+                SecurityContextHolder.setContext(securityContext);
 
-//                 SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
 
-//             }
+        }
+        filterChain.doFilter(request, response);
+        
+    }
 
-//         } catch (Exception e) {
+    // private JwtTokenProvider jwtTokenProvider;
 
-//             logger.error("Could not set user authentication in security context", e);
+    // private CustomUserDetailsServiceImpl customUserDetailsServiceImpl;
 
-//         }
+    // @Autowired
+    // public void setJwtTokenProvider(JwtTokenProvider jwtTokenProvider) {
+    //     this.jwtTokenProvider = jwtTokenProvider;
+    // }
 
-//         filterChain.doFilter(request, response);
+    // @Autowired
+    // public void setCustomUserDetailsServiceImpl(CustomUserDetailsServiceImpl customUserDetailsServiceImpl) {
+    //     this.customUserDetailsServiceImpl = customUserDetailsServiceImpl;
+    // }
 
-//     }
+    // @Override
+    // protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-//     private String extractJwtFromRequest(HttpServletRequest request) {
+    //     try {
 
-//         String bearerToken = request.getHeader("Authorization");
+    //         String jwt = extractJwtFromRequest(request);
 
-//         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-//             return bearerToken.substring(7);
-//         }
+    //         if (StringUtils.hasText(jwt) && jwtTokenProvider.validateToken(jwt)) {
 
-//         return null;
+    //             String userEmail = jwtTokenProvider.getUserEmailFromToken(jwt);
 
-//     }
+    //             UserDetails userDetails = customUserDetailsServiceImpl.loadUserByUsername(userEmail);
 
-// }
+    //             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+    //                     userDetails, null, null);
+    //             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+    //             SecurityContextHolder.getContext().setAuthentication(authentication);
+
+    //         }
+
+    //     } catch (Exception e) {
+
+    //         logger.error("Could not set user authentication in security context", e);
+
+    //     }
+
+    //     filterChain.doFilter(request, response);
+
+    // }
+
+    // private String extractJwtFromRequest(HttpServletRequest request) {
+
+    //     String bearerToken = request.getHeader("Authorization");
+
+    //     if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+    //         return bearerToken.substring(7);
+    //     }
+
+    //     return null;
+
+    // }
+
+}
