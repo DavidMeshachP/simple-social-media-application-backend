@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 import com.zerplabsintern.simplesocialmediawebapplication.dto.PostImagesDto;
 import com.zerplabsintern.simplesocialmediawebapplication.entity.PostImages;
 import com.zerplabsintern.simplesocialmediawebapplication.exception.PostImagesServiceException;
+import com.zerplabsintern.simplesocialmediawebapplication.exception.UserServiceException;
 import com.zerplabsintern.simplesocialmediawebapplication.repository.PostImagesRepository;
 import com.zerplabsintern.simplesocialmediawebapplication.repository.PostRepository;
+import com.zerplabsintern.simplesocialmediawebapplication.service.CompressImageService;
 import com.zerplabsintern.simplesocialmediawebapplication.service.PostImagesService;
 
 @Service
@@ -22,6 +24,9 @@ public class PostImagesServiceImpl implements PostImagesService {
     @Autowired
     private PostRepository postRepository;
 
+    @Autowired
+    private CompressImageService compressImageService;
+
     @Override
     public PostImagesDto addPostImages(PostImagesDto postImagesDto) {
         try {
@@ -30,7 +35,17 @@ public class PostImagesServiceImpl implements PostImagesService {
 
             if(postImagesDto.getImage() != null ) {
 
-                postImages.setImage(Base64.getDecoder().decode(postImagesDto.getImage()));
+                if( compressImageService.checkLessThanFiveMB( postImagesDto.getImage()) ) {
+
+                    postImages.setImage(Base64.getDecoder().decode(postImagesDto.getImage()));
+                }
+                else {
+                    try {
+                        postImages.setImage(Base64.getDecoder().decode(compressImageService.compressImage(postImagesDto.getImage(), 0, 0, 0.7f)));
+                    } catch (Exception e) {
+                        throw new UserServiceException("there is a error while compressing a image.");
+                    }
+                }
             }
             else {
                 throw new PostImagesServiceException("image field cannot be null ");

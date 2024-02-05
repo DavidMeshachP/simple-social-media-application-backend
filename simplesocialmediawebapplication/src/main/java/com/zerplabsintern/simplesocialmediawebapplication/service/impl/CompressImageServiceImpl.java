@@ -32,15 +32,32 @@ public class CompressImageServiceImpl implements CompressImageService {
         
         String compressedBase64String = Base64.getEncoder().encodeToString(compressedImageData);
 
-        return compressedBase64String;
+        if( checkLessThanFiveMB( compressedBase64String ) ) {
+
+            return compressedBase64String;
+        }
+
+        else {
+            return compressImage( base64Image, 0, 0, quality - 0.1f );
+        }
+
 
     }
 
-    public int getSizeOfImage(String base64String) {
+    public long getSizeOfImage(String base64String) {
         String base64Image = base64String;
         byte[] decodedImage = Base64.getDecoder().decode(base64Image);
-        int imageSizeInBytes = decodedImage.length;
+        long imageSizeInBytes = decodedImage.length;
         return imageSizeInBytes;
+    }
+
+    @Override
+    public boolean checkLessThanFiveMB( String base64String ) {
+
+        double decodedSizeInMB = getSizeOfImage(base64String) / (1024.0 * 1024.0);
+
+        return decodedSizeInMB < 5.0;
+
     }
     
 }

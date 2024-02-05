@@ -11,6 +11,7 @@ import com.zerplabsintern.simplesocialmediawebapplication.dto.UserDto;
 import com.zerplabsintern.simplesocialmediawebapplication.entity.User;
 import com.zerplabsintern.simplesocialmediawebapplication.exception.UserServiceException;
 import com.zerplabsintern.simplesocialmediawebapplication.repository.UserRepository;
+import com.zerplabsintern.simplesocialmediawebapplication.service.CompressImageService;
 import com.zerplabsintern.simplesocialmediawebapplication.service.UserService;
 
 @Service
@@ -18,6 +19,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private CompressImageService compressImageService;
 
     @Override
     public UserDto save(UserDto userDto) {
@@ -75,7 +79,28 @@ public class UserServiceImpl implements UserService {
 
         newUser.setActive(true);
 
-        newUser.setImage(Base64.getDecoder().decode(userDto.getImage()));
+        if( userDto.getImage() != null ) {
+
+            if ( compressImageService.checkLessThanFiveMB(userDto.getImage()) ) {
+
+                newUser.setImage(Base64.getDecoder().decode(userDto.getImage()));
+            }
+            else {
+
+                try {
+                    
+                    newUser.setImage(Base64.getDecoder().decode(compressImageService.compressImage(userDto.getImage(), 0, 0, 0.7f)));
+
+
+                } catch (Exception e) {
+                    
+                    throw new UserServiceException("there is a error while compressing a image.");
+
+                }
+
+            }
+
+        }
 
         Long id = userRepository.findIdbyemailId(userDto.getEmailId());
 
