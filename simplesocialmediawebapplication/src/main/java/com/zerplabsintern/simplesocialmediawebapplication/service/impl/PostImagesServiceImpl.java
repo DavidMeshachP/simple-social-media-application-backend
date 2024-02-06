@@ -99,4 +99,21 @@ public class PostImagesServiceImpl implements PostImagesService {
 
     }
 
+    @Override
+    public boolean deleteByPostId(Long PostId) {
+
+        try {
+            if(postImagesRepository.findbyPostId(PostId) != null){
+
+                postImagesRepository.deleteByPostId(PostId);
+                return true;
+            }
+            else {
+                throw new PostImagesServiceException("the id given does not correspond to any of the post images, so please check the id and send the request again ");
+            }
+        } catch (Exception e) {
+            throw new PostImagesServiceException("there is a exception while trying to delete the postImages... ");
+        }
+    }
+
 }

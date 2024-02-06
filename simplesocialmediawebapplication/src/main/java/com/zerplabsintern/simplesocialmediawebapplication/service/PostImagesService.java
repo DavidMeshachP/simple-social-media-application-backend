@@ -12,5 +12,7 @@ public interface PostImagesService {
     boolean deletePostImages(Long id);
 
     List<PostImages> getPostImages(Long id);
+
+    boolean deleteByPostId(Long id);
     
 }

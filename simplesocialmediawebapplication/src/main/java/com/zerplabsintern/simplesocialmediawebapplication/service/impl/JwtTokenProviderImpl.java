@@ -4,7 +4,6 @@ import java.security.Key;
 import java.util.Date;
 import java.util.function.Function;
 
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.zerplabsintern.simplesocialmediawebapplication.exception.JwtTokenProviderException;
@@ -20,17 +19,6 @@ import io.jsonwebtoken.security.Keys;
 public class JwtTokenProviderImpl implements JwtTokenProvider {
 
     private String secretKey = "yffqg1slcR3L/2qqdmwl02iN4Be3W2lQGQ6FtMKyNNFh81GW2+QrmxkJafuYRfw+";
-
-    public String generateToken(UserDetails userDetails) {
-
-        return Jwts.builder()
-            .setSubject(userDetails.getUsername())
-            .setIssuedAt(new Date(System.currentTimeMillis()))
-            .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
-            .signWith(getSignKey(),SignatureAlgorithm.HS256)
-            .compact();
-        
-    }
 
     public String createToken( String emailId ) {
 
@@ -75,15 +63,8 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
         }
     }
 
-    public boolean isTokenValid(String token, UserDetails userDetails ) {
-        final String username = extractUserName(token);
-        return ( username.equals(userDetails.getUsername()) && !isTokenExpired(token));
-    }
-
-    private boolean isTokenExpired(String token) {
-
+    public boolean isTokenValid(String token) {
         return extractClaims(token, Claims::getExpiration).before(new Date());
-
     }
 
 }

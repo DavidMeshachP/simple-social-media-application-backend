@@ -22,6 +22,15 @@ public class PostServiceImpl implements PostService {
     @Autowired
     private UserRepository userRepository;
 
+    // @Autowired 
+    // private CommentService commentService;
+
+    // @Autowired
+    // private LikeService likeService;
+
+    // @Autowired
+    // private PostImagesService postImagesService;
+
     public PostDto save(PostDto postDto) {
 
         Post newPost = new Post();
@@ -119,7 +128,15 @@ public class PostServiceImpl implements PostService {
         
         try {
             if(postRepository.findById(id).isPresent()) {
+
+                // commentService.deleteByPostId(id);
+
+                // likeService.deletebyPostId(id);
+
+                // postImages.deletebyPostId(id);
+
                 postRepository.deleteById(id);
+
                 return true;
             }
             else{

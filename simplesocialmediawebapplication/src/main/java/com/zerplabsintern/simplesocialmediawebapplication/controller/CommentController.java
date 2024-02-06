@@ -25,7 +25,7 @@ public class CommentController {
         try {
             return new ResponseEntity<>(commentService.addComment(commentDto),HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>("check data",HttpStatus.OK);
+            return new ResponseEntity<>("check data",HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -34,7 +34,7 @@ public class CommentController {
         try {
             return new ResponseEntity<>(commentService.updateComment(commentDto),HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>("check data again",HttpStatus.OK);
+            return new ResponseEntity<>("check data again",HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -43,7 +43,7 @@ public class CommentController {
         try {
             return new ResponseEntity<>(commentService.removeComment(id),HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>("check data again",HttpStatus.OK);
+            return new ResponseEntity<>("check data again",HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -52,7 +52,7 @@ public class CommentController {
         try {
             return new ResponseEntity<>(commentService.getAllComment(id),HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>("check data again",HttpStatus.OK);
+            return new ResponseEntity<>("check data again",HttpStatus.BAD_REQUEST);
         }
     }
 
