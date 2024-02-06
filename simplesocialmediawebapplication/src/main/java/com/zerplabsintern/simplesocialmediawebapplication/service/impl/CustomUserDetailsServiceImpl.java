@@ -1,5 +1,7 @@
 package com.zerplabsintern.simplesocialmediawebapplication.service.impl;
 
+import java.util.Collections;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -29,6 +31,8 @@ public class CustomUserDetailsServiceImpl implements UserDetailsService{
 
             UserDetails userDetails = org.springframework.security.core.userdetails.User.builder()
                     .username(user.getEmailId())
+                    .password(user.getPassword())
+                    .authorities(Collections.emptyList())
                     .build();
     
             return userDetails;

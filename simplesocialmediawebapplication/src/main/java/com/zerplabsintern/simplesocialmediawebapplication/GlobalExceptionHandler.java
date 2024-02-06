@@ -110,10 +110,12 @@ public class GlobalExceptionHandler {
             this.message = message;
         }
 
+        @SuppressWarnings("unused")
         public int getStatus() {
             return status;
         }
 
+        @SuppressWarnings("unused")
         public String getMessage() {
             return message;
         }
