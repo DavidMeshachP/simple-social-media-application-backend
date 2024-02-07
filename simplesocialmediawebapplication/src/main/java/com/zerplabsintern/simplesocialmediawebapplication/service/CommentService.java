@@ -12,5 +12,7 @@ public interface CommentService {
 
     boolean removeComment(Long id);
 
-    List<CommentDto> getAllComment(Long id);    
+    List<CommentDto> getAllComment(Long id);
+    
+    boolean deleteByPostId(Long id);
 }

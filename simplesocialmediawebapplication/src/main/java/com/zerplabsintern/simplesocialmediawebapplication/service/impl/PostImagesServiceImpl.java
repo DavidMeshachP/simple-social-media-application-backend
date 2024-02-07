@@ -105,7 +105,7 @@ public class PostImagesServiceImpl implements PostImagesService {
         try {
             if(postImagesRepository.findbyPostId(PostId) != null){
 
-                postImagesRepository.deleteByPostId(PostId);
+                postImagesRepository.deleteByPost_Id(PostId);
                 return true;
             }
             else {

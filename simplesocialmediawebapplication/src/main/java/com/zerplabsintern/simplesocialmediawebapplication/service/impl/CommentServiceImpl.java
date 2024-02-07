@@ -153,4 +153,18 @@ public class CommentServiceImpl implements CommentService {
         }
     }
 
+    @Override
+    public boolean deleteByPostId(Long id) {
+
+        if( commentRepository.findBycPost_Id(id).isEmpty() ) {
+
+            return false;
+        }
+        else {
+            commentRepository.deleteByPost_Id(id);
+            return true;
+        }
+
+    }    
+
 }

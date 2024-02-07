@@ -102,6 +102,20 @@ public class LikeServiceImpl implements LikeService {
         }
     }
 
-    
+    @Override
+    public boolean deleteByPostId(Long id) {
+
+        if( likeRepository.findLikesBylPost(id).isEmpty() ) {
+
+            return false;
+        }
+        else {
+
+            likeRepository.deleteByPost_Id(id);
+
+            return true;
+        }
+
+    }
     
 }

@@ -11,6 +11,8 @@ import com.zerplabsintern.simplesocialmediawebapplication.entity.User;
 import com.zerplabsintern.simplesocialmediawebapplication.exception.PostServiceException;
 import com.zerplabsintern.simplesocialmediawebapplication.repository.PostRepository;
 import com.zerplabsintern.simplesocialmediawebapplication.repository.UserRepository;
+import com.zerplabsintern.simplesocialmediawebapplication.service.CommentService;
+import com.zerplabsintern.simplesocialmediawebapplication.service.LikeService;
 import com.zerplabsintern.simplesocialmediawebapplication.service.PostService;
 
 @Service
@@ -22,11 +24,11 @@ public class PostServiceImpl implements PostService {
     @Autowired
     private UserRepository userRepository;
 
-    // @Autowired 
-    // private CommentService commentService;
+    @Autowired 
+    private CommentService commentService;
 
-    // @Autowired
-    // private LikeService likeService;
+    @Autowired
+    private LikeService likeService;
 
     // @Autowired
     // private PostImagesService postImagesService;
@@ -129,9 +131,9 @@ public class PostServiceImpl implements PostService {
         try {
             if(postRepository.findById(id).isPresent()) {
 
-                // commentService.deleteByPostId(id);
+                commentService.deleteByPostId(id);
 
-                // likeService.deletebyPostId(id);
+                likeService.deleteByPostId(id);
 
                 // postImages.deletebyPostId(id);
 

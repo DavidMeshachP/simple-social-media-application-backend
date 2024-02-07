@@ -13,4 +13,6 @@ public interface LikeService {
 
     List<LikeDto> getLike(Long id);
 
+    boolean deleteByPostId(Long id);
+
 }
