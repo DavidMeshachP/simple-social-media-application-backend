@@ -13,7 +13,10 @@ import com.zerplabsintern.simplesocialmediawebapplication.repository.PostReposit
 import com.zerplabsintern.simplesocialmediawebapplication.repository.UserRepository;
 import com.zerplabsintern.simplesocialmediawebapplication.service.CommentService;
 import com.zerplabsintern.simplesocialmediawebapplication.service.LikeService;
+import com.zerplabsintern.simplesocialmediawebapplication.service.PostImagesService;
 import com.zerplabsintern.simplesocialmediawebapplication.service.PostService;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -30,8 +33,8 @@ public class PostServiceImpl implements PostService {
     @Autowired
     private LikeService likeService;
 
-    // @Autowired
-    // private PostImagesService postImagesService;
+    @Autowired
+    private PostImagesService postImagesService;
 
     public PostDto save(PostDto postDto) {
 
@@ -126,6 +129,7 @@ public class PostServiceImpl implements PostService {
 
 
     @Override
+    @Transactional
     public boolean deletePost(Long id) {
         
         try {
@@ -135,7 +139,7 @@ public class PostServiceImpl implements PostService {
 
                 likeService.deleteByPostId(id);
 
-                // postImages.deletebyPostId(id);
+                postImagesService.deleteByPostId(id);
 
                 postRepository.deleteById(id);
 
