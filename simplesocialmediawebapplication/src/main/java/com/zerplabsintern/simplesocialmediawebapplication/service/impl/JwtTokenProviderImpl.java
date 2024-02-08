@@ -57,13 +57,14 @@ public class JwtTokenProviderImpl implements JwtTokenProvider {
 
                 Claims jwt = Jwts.parserBuilder().setSigningKey(getSignKey()).build().parseClaimsJws(token).getBody();
                 return jwt;
+                
             } catch (Exception e) {
                 throw new JwtTokenProviderException("token parsing error, check again " + e);
             }
         }
     }
 
-    public boolean isTokenValid(String token) {
+    public boolean isTokenExpired(String token) {
         return extractClaims(token, Claims::getExpiration).before(new Date());
     }
 

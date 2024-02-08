@@ -7,6 +7,7 @@ import com.zerplabsintern.simplesocialmediawebapplication.dto.LoginDto;
 import com.zerplabsintern.simplesocialmediawebapplication.entity.User;
 import com.zerplabsintern.simplesocialmediawebapplication.exception.LoginServiceException;
 import com.zerplabsintern.simplesocialmediawebapplication.repository.UserRepository;
+import com.zerplabsintern.simplesocialmediawebapplication.service.JwtTokenProvider;
 import com.zerplabsintern.simplesocialmediawebapplication.service.LoginService;
 
 @Service
@@ -16,29 +17,15 @@ public class LoginServiceImpl implements LoginService {
     private UserRepository userRepository;
 
     @Autowired
-    private JwtTokenProviderImpl jwtTokenProviderImpl;
-
-    @Override
-    public String checkAndGetEmailId(LoginDto loginDto) {
-
-        User user = userRepository.getReferenceById(userRepository.findIdbyemailId(loginDto.getEmailIdString()));
-
-        if ( user != null ) {
-            return user.getEmailId();
-        }
-        else {
-            throw new LoginServiceException("no user found, could not login ...");
-        }
-
-    }
+    private JwtTokenProvider jwtTokenProvider;
 
     @Override
     public String checkLoginAndGenerateToken(LoginDto loginDto) {
 
         User user = userRepository.getReferenceById(userRepository.findIdbyemailId(loginDto.getEmailIdString()));
 
-        if( user != null ) {
-            return jwtTokenProviderImpl.createToken(user.getEmailId());
+        if( user != null && user.getPassword().equals(loginDto.getPassword()) ) {
+            return jwtTokenProvider.createToken(user.getEmailId());
         }
         else {
             throw new LoginServiceException("no user found, please check the details...");

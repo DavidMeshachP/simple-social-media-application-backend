@@ -20,20 +20,19 @@ public class LoginController {
     @PostMapping("/login")
     public ResponseEntity<?> loginCheck(@RequestBody LoginDto loginDto) {
 
-    try {
-        
-        String jwtString = loginService.checkLoginAndGenerateToken(loginDto);
+        try {
 
-        if( jwtString == null ) {
-            throw new LoginServiceException("give correct credentials..");
-        }
-        else {
-            return new ResponseEntity<>(jwtString, HttpStatus.OK);
-        }
+            String jwtString = loginService.checkLoginAndGenerateToken(loginDto);
 
-    } catch (Exception e) {
-        throw new LoginServiceException("exception occured while checking and generating token.. ");
-    }
+            if (jwtString == null) {
+                throw new LoginServiceException("give correct credentials..");
+            } else {
+                return new ResponseEntity<>(jwtString, HttpStatus.OK);
+            }
+
+        } catch (Exception e) {
+            throw new LoginServiceException("exception occured while checking and generating token.. ");
+        }
 
     }
 

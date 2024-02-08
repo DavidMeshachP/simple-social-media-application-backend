@@ -4,9 +4,7 @@ public interface JwtTokenProvider {
 
     String extractUserName(String token);
 
-    // String generateToken(UserDetails userDetails);
-
-    boolean isTokenValid(String token);
+    boolean isTokenExpired(String token);
 
     String createToken( String emailId );
     
