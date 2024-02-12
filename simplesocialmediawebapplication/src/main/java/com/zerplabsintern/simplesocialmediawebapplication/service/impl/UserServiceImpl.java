@@ -48,7 +48,14 @@ public class UserServiceImpl implements UserService {
 
         if( userDto.getEmailId() != null ) {
 
-            newUser.setEmailId(userDto.getEmailId());
+            if(validateEmail(userDto.getEmailId())) {
+
+                newUser.setEmailId(userDto.getEmailId());
+            }
+            else {
+                throw new UserServiceException("email_id format is wrong, please check the email id that was sent again.");
+            }
+
         }
         else {
             throw new UserServiceException("email_id field cannot be null, check the details that was sent again..");
@@ -64,8 +71,8 @@ public class UserServiceImpl implements UserService {
 
         if( userDto.getPassword() != null ) {
 
-            if(userDto.getPassword().length() > 20 ) {
-                throw new UserServiceException("password length more than the limit reduce it to less than 20 ");
+            if(userDto.getPassword().length() > 20 || userDto.getPassword().length() < 12) {
+                throw new UserServiceException("password length more than the limit reduce it to less than 20 or it is less than the limit, increase the size to more than 12");
             }
             else {
                 
@@ -142,7 +149,13 @@ public class UserServiceImpl implements UserService {
                     newUser.setName(userDto.getName());
                 }
                 if(userDto.getPassword() !=null) {
-                    newUser.setPassword(userDto.getPassword());
+                    if(userDto.getPassword().length() > 20 || userDto.getPassword().length() < 12) {
+                        throw new UserServiceException("password length more than the limit reduce it to less than 20 or it is less than the limit, increase the size to more than 12");
+                    }
+                    else {
+                        
+                        newUser.setPassword(userDto.getPassword());
+                    }
                 }
                 if(userDto.getImage() != null) {
                     newUser.setImage(Base64.getDecoder().decode(userDto.getImage()));
@@ -248,6 +261,23 @@ public class UserServiceImpl implements UserService {
         }
         else {
             throw new UserServiceException("No User found ..");
+        }
+
+    }
+
+    private boolean validateEmail(String emailString) {
+
+
+        String localpart[] = emailString.split("@");
+
+        if(localpart[0].length() > 64 ) {
+            return false;
+        }
+        else if(localpart[1].length() < 255 ) {
+            return true;
+        }
+        else{
+            return false;
         }
 
     }
