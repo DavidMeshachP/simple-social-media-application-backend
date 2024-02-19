@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.zerplabsintern.simplesocialmediawebapplication.dto.CommentDto;
@@ -27,7 +28,7 @@ public class CommentServiceImpl implements CommentService {
     private PostRepository postRepository;
 
     @Override
-    public CommentDto addComment(CommentDto commentDto) {
+    public CommentDto addComment(CommentDto commentDto, UserDetails currentUser) {
         try {
             Comment newComment = new Comment();
 
@@ -41,7 +42,16 @@ public class CommentServiceImpl implements CommentService {
 
             if(commentDto.getUserId() != null ) {
 
-                newComment.setcUser(userRepository.findById(commentDto.getUserId()).get());
+                Long userId = userRepository.findIdbyemailId(currentUser.getUsername());
+
+                if(userId == commentDto.getUserId()) {
+
+                    newComment.setcUser(userRepository.findById(commentDto.getUserId()).get());
+                }
+                else {
+                    throw new CommentServiceException("wrong user id, the logged in user does not match with the given user");
+                }
+
                 
             }
             else {
@@ -67,11 +77,15 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public boolean removeComment(Long id) {
+    public boolean removeComment(Long id, UserDetails currentUser) {
         try {
             if (commentRepository.findById(id).isPresent()) {
 
-                commentRepository.deleteById(id);
+                if(userRepository.findIdbyemailId(currentUser.getUsername()) == commentRepository.findById(id).get().getcUser().getId() ) {
+
+                    commentRepository.deleteById(id);
+
+                }
 
                 return true;
             } else {
@@ -83,13 +97,20 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public CommentDto updateComment(CommentDto commentDto) {
+    public CommentDto updateComment(CommentDto commentDto, UserDetails currentUser) {
         try {
             Comment newComment = new Comment();
 
             if(commentDto.getId() != null) {
 
-                newComment.setId(commentDto.getId());
+                if(userRepository.findIdbyemailId(currentUser.getUsername()) == commentRepository.findById(commentDto.getId()).get().getcUser().getId() ) {
+
+                    newComment.setId(commentDto.getId());
+                }
+                else {
+                    throw new CommentServiceException("the user id does not match with the provided user id.");
+                }
+
             }
             else {
                 throw new CommentServiceException("id field cannot be null");

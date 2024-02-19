@@ -3,6 +3,7 @@ package com.zerplabsintern.simplesocialmediawebapplication.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.zerplabsintern.simplesocialmediawebapplication.dto.PostDto;
@@ -36,7 +37,7 @@ public class PostServiceImpl implements PostService {
     @Autowired
     private PostImagesService postImagesService;
 
-    public PostDto save(PostDto postDto) {
+    public PostDto save(PostDto postDto, UserDetails currentUser) {
 
         Post newPost = new Post();
         
@@ -53,8 +54,15 @@ public class PostServiceImpl implements PostService {
             }
 
             if(postDto.getUserId() != null ) {
+
+                if( userRepository.findIdbyemailId(currentUser.getUsername()) == postDto.getUserId()) {
+
+                    newPost.setpUser(userRepository.getReferenceById(postDto.getUserId()));
+                }
+                else {
+                    throw new PostServiceException("user id associated with this request is not the same as logged in user");
+                }
                 
-                newPost.setpUser(userRepository.getReferenceById(postDto.getUserId()));
             }
             else{
                 throw new PostServiceException("userId cannot be null, check the data that was sent again..");
@@ -74,7 +82,7 @@ public class PostServiceImpl implements PostService {
     }
 
 
-    public PostDto updatePost(Long id, PostDto postDto) {
+    public PostDto updatePost(Long id, PostDto postDto, UserDetails currentUser ) {
 
         if(postRepository.findById(id).isPresent()){
 
@@ -87,15 +95,21 @@ public class PostServiceImpl implements PostService {
 
             if( postDto.getUserId() != null ) {
 
-                User user = userRepository.findById(postDto.getUserId()).get();
-
-                if(user != null ) {
-
-                    newPost.setpUser(user);
+                if( userRepository.findIdbyemailId(currentUser.getUsername()) == postDto.getUserId()) {
+                    User user = userRepository.findById(postDto.getUserId()).get();
+    
+                    if(user != null ) {
+    
+                        newPost.setpUser(user);
+                    }
+                    else {
+                        throw new PostServiceException("no such user, check the data again ");
+                    }
                 }
                 else {
-                    throw new PostServiceException("no such user, check the data again ");
+                    throw new PostServiceException("the logged in user is not matching with the requested user post.");
                 }
+
             }
             else {
                 throw new PostServiceException("user id cannot be null, check the data that was sent again..");
@@ -130,24 +144,32 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public boolean deletePost(Long id) {
+    public boolean deletePost(Long id, UserDetails currentUser ) {
         
         try {
-            if(postRepository.findById(id).isPresent()) {
 
-                commentService.deleteByPostId(id);
+            if( userRepository.findIdbyemailId(currentUser.getUsername()) == postRepository.findById(id).get().getpUser().getId() ) {
 
-                likeService.deleteByPostId(id);
-
-                postImagesService.deleteByPostId(id);
-
-                postRepository.deleteById(id);
-
-                return true;
+                if(postRepository.findById(id).isPresent()) {
+    
+                    commentService.deleteByPostId(id);
+    
+                    likeService.deleteByPostId(id);
+    
+                    postImagesService.deleteByPostId(id);
+    
+                    postRepository.deleteById(id);
+    
+                    return true;
+                }
+                else{
+                    throw new PostServiceException("no post found by this id to delete..");
+                }
             }
-            else{
-                throw new PostServiceException("no post found by this id to delete..");
+            else {
+                throw new PostServiceException("the requested user does not match with the logged in user.");
             }
+
         } catch (Exception e) {
             throw new PostServiceException(e.getMessage());
         }

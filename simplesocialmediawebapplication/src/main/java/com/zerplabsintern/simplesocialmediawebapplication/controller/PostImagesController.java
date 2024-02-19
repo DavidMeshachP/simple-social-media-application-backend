@@ -3,6 +3,8 @@ package com.zerplabsintern.simplesocialmediawebapplication.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,18 +22,20 @@ public class PostImagesController {
     private PostImagesService postImagesService;
 
     @PostMapping("/post-images")
-    public ResponseEntity<?> createPostImages(@RequestBody PostImagesDto postImagesDto) {
+    public ResponseEntity<?> createPostImages(@RequestBody PostImagesDto postImagesDto, Authentication authentication) {
         try {
-            return new ResponseEntity<>(postImagesService.addPostImages(postImagesDto), HttpStatus.OK);
+            UserDetails currentUser = (UserDetails) authentication.getPrincipal();
+            return new ResponseEntity<>(postImagesService.addPostImages(postImagesDto, currentUser), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("Unable to save the images..", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @DeleteMapping("/post-images/{id}")
-    public ResponseEntity<?> deletePostImages(@PathVariable Long id) {
+    public ResponseEntity<?> deletePostImages(@PathVariable Long id, Authentication authentication) {
         try {
-            return new ResponseEntity<>(postImagesService.deletePostImages(id), HttpStatus.OK);
+            UserDetails currentUser = (UserDetails) authentication.getPrincipal();
+            return new ResponseEntity<>(postImagesService.deletePostImages(id, currentUser), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("Unable to save the images..", HttpStatus.INTERNAL_SERVER_ERROR);
         }

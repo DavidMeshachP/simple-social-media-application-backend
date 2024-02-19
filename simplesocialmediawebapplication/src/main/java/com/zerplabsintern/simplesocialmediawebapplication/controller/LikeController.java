@@ -3,6 +3,8 @@ package com.zerplabsintern.simplesocialmediawebapplication.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,9 +35,10 @@ public class LikeController {
     }
 
     @DeleteMapping("/likes/{id}")
-    public boolean removeLike(@PathVariable Long id) {
+    public boolean removeLike(@PathVariable Long id, Authentication authentication) {
         try {
-            if(likeService.removeLike(likeRepository.getReferenceById(id))){
+            UserDetails currentUser = (UserDetails) authentication.getPrincipal();
+            if(likeService.removeLike(likeRepository.getReferenceById(id), currentUser)){
                 return true;
             }
             else{
@@ -47,9 +50,10 @@ public class LikeController {
     }
 
     @PostMapping("/likes")
-    public ResponseEntity<?> addLike(@RequestBody LikeDto likeDto) {
+    public ResponseEntity<?> addLike(@RequestBody LikeDto likeDto, Authentication authentication) {
         try {
-            return new ResponseEntity<>(likeService.addLike(likeDto),HttpStatus.OK);
+            UserDetails currentUser = (UserDetails) authentication.getPrincipal();
+            return new ResponseEntity<>(likeService.addLike(likeDto, currentUser),HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("some error ",HttpStatus.BAD_REQUEST);
         }

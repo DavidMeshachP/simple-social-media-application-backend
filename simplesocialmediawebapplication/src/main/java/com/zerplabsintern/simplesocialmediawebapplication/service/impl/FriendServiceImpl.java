@@ -3,6 +3,7 @@ package com.zerplabsintern.simplesocialmediawebapplication.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.zerplabsintern.simplesocialmediawebapplication.dto.FriendDto;
@@ -22,14 +23,21 @@ public class FriendServiceImpl implements FriendService {
     private UserRepository userRepository;
 
     @Override
-    public FriendDto addFriend(FriendDto friendDto) {
+    public FriendDto addFriend(FriendDto friendDto, UserDetails currentUser) {
         try {
 
             Friend newFriend = new Friend();
 
             if(friendDto.getUserId() != null ) {
 
-                newFriend.setfUser(userRepository.getReferenceById(friendDto.getUserId()));
+                if(userRepository.findIdbyemailId(currentUser.getUsername()) == friendDto.getUserId()) {
+
+                    newFriend.setfUser(userRepository.getReferenceById(friendDto.getUserId()));
+                }
+                else {
+                    throw new FriendServiceException("userId is different from which is sent and which is logged in");
+                }
+
             }
             else {
                 throw new FriendServiceException("userId field cannot be empty, check the details that was sent..");
@@ -62,17 +70,25 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
-    public boolean deleteFriends(Long userId, Long friendId) {
+    public boolean deleteFriends(Long userId, Long friendId, UserDetails currentUser) {
         try {
-            if(friendRepository.existsByfUser_Id(userId,friendId) != null){
-                
-                friendRepository.deleteById(friendRepository.findIdByfUser_idfFriend_id(userId, friendId));
 
-                return true;
+            if(userRepository.findIdbyemailId(currentUser.getUsername()) == userId || userRepository.findIdbyemailId(currentUser.getUsername()) == friendId ) {
+
+                if(friendRepository.existsByfUser_Id(userId,friendId) != null){
+                    
+                    friendRepository.deleteById(friendRepository.findIdByfUser_idfFriend_id(userId, friendId));
+    
+                    return true;
+                }
+                else{
+                    throw new FriendServiceException("the combination of user id and friend id is not present.. ");
+                }
             }
-            else{
-                throw new FriendServiceException("the combination of user id and friend id is not present.. ");
+            else {
+                throw new FriendServiceException("the logged in user is not matched.");
             }
+
         } catch (Exception e) {
             throw new FriendServiceException("exception occured while trying to save friends...");
         }

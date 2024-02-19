@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.zerplabsintern.simplesocialmediawebapplication.dto.UserDto;
@@ -122,7 +123,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto updateUser(Long id, UserDto userDto) {
+    public UserDto updateUser(Long id, UserDto userDto, UserDetails currentUser) {
         try {
 
             if (userRepository.findById(id).isPresent()) {
@@ -130,7 +131,13 @@ public class UserServiceImpl implements UserService {
                 User newUser = userRepository.getReferenceById(id);
 
                 if(userDto.getId() != null) {
-                    newUser.setId(id);
+                    if( userRepository.findIdbyemailId(currentUser.getUsername()) == userDto.getId()) {
+
+                        newUser.setId(id);
+                    }
+                    else {
+                        throw new UserServiceException("the logged in user does not match with the requesting user.");
+                    }
                 }
                 else {
                     throw new UserServiceException("id cannot be null, check the data that was sent again..");
@@ -182,20 +189,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean deleteUser(Long id) {
+    public boolean deleteUser(Long id, UserDetails currentUser) {
         
         try {
 
             if (userRepository.findById(id).isPresent()) {
 
-                UserDto userDto = new UserDto();
+                if(  userRepository.findIdbyemailId(currentUser.getUsername()) == id ) {
 
-                userDto.setId(id);
-                userDto.setActive(false);
+                    UserDto userDto = new UserDto();
+    
+                    userDto.setId(id);
+                    userDto.setActive(false);
+    
+                    updateUser(id, userDto, currentUser);
+    
+                    return true;
+                }
+                else {
+                    throw new UserServiceException("the logged in user and the requested user is different.");
+                }
 
-                updateUser(id, userDto);
-
-                return true;
             }
             else {
                 throw new UserServiceException("User not found to delete...");

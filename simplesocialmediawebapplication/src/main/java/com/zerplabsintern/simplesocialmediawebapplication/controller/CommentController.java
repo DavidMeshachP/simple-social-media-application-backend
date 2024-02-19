@@ -3,6 +3,8 @@ package com.zerplabsintern.simplesocialmediawebapplication.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,29 +23,34 @@ public class CommentController {
     private CommentService commentService;
 
     @PostMapping("/comments")
-    public ResponseEntity<?> addComment(@RequestBody CommentDto commentDto) {
+    public ResponseEntity<?> addComment(@RequestBody CommentDto commentDto, Authentication authentication) {
         try {
-            return new ResponseEntity<>(commentService.addComment(commentDto),HttpStatus.OK);
+            UserDetails currentUser = (UserDetails) authentication.getPrincipal();
+            return new ResponseEntity<>(commentService.addComment(commentDto, currentUser),HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>("check data",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("check data" + e ,HttpStatus.BAD_REQUEST);
         }
     }
 
     @PutMapping("/comments")
-    public ResponseEntity<?> updateComment(@RequestBody CommentDto commentDto) {
+    public ResponseEntity<?> updateComment(@RequestBody CommentDto commentDto, Authentication authentication) {
         try {
-            return new ResponseEntity<>(commentService.updateComment(commentDto),HttpStatus.OK);
+            UserDetails currentUser = (UserDetails) authentication.getPrincipal();
+            return new ResponseEntity<>(commentService.updateComment(commentDto, currentUser),HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>("check data again",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("check data again" + e,HttpStatus.BAD_REQUEST);
         }
     }
 
     @DeleteMapping("/comments/{id}")
-    public ResponseEntity<?> deleteComment(@PathVariable Long id) {
+    public ResponseEntity<?> deleteComment(@PathVariable Long id, Authentication authentication) {
         try {
-            return new ResponseEntity<>(commentService.removeComment(id),HttpStatus.OK);
+            
+            UserDetails currentUser = (UserDetails) authentication.getPrincipal();
+
+            return new ResponseEntity<>(commentService.removeComment(id, currentUser),HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>("check data again",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("check data again" + e,HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -52,7 +59,7 @@ public class CommentController {
         try {
             return new ResponseEntity<>(commentService.getAllComment(id),HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>("check data again",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("check data again" + e,HttpStatus.BAD_REQUEST);
         }
     }
 

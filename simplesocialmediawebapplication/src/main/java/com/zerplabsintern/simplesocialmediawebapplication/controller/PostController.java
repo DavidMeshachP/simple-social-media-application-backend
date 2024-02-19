@@ -3,6 +3,8 @@ package com.zerplabsintern.simplesocialmediawebapplication.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,10 +23,13 @@ public class PostController {
     private PostService postService;
 
     @PostMapping("/posts")
-    public ResponseEntity<?> createPost(@RequestBody PostDto postDto) {
+    public ResponseEntity<?> createPost(@RequestBody PostDto postDto, Authentication authentication) {
 
         try {
-            return new ResponseEntity<>(postService.save(postDto),HttpStatus.OK);
+
+            UserDetails currentUser = (UserDetails) authentication.getPrincipal();
+
+            return new ResponseEntity<>(postService.save(postDto, currentUser),HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("check the data that was sent again.",HttpStatus.BAD_REQUEST);
         }
@@ -32,11 +37,13 @@ public class PostController {
     }
 
     @PutMapping("/posts/{id}")
-    public ResponseEntity<?> updatePost(@PathVariable Long id, @RequestBody PostDto postDto) {
+    public ResponseEntity<?> updatePost(@PathVariable Long id, @RequestBody PostDto postDto, Authentication authentication) {
 
         try {
 
-            return new ResponseEntity<>(postService.updatePost(id, postDto),HttpStatus.OK);
+            UserDetails currentUser = (UserDetails) authentication.getPrincipal();
+
+            return new ResponseEntity<>(postService.updatePost(id, postDto, currentUser),HttpStatus.OK);
             
         } catch (Exception e) {
             return new ResponseEntity<>("check the data that was sent again.",HttpStatus.BAD_REQUEST);
@@ -45,10 +52,13 @@ public class PostController {
     }
     
     @DeleteMapping("/posts/{id}")
-    public ResponseEntity<?> deletePost(@PathVariable Long id){
+    public ResponseEntity<?> deletePost(@PathVariable Long id, Authentication authentication){
 
         try {
-            return new ResponseEntity<>(postService.deletePost(id),HttpStatus.OK);
+
+            UserDetails currentUser = (UserDetails) authentication.getPrincipal();
+
+            return new ResponseEntity<>(postService.deletePost(id, currentUser),HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("check the data that was sent again.",HttpStatus.BAD_REQUEST);
         }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.zerplabsintern.simplesocialmediawebapplication.dto.LikeDto;
@@ -29,13 +30,20 @@ public class LikeServiceImpl implements LikeService {
     private UserRepository userRepository;
 
     @Override
-    public LikeDto addLike(LikeDto likeDto) {
+    public LikeDto addLike(LikeDto likeDto, UserDetails currentUser) {
         try {
             Likes newLike = new Likes();
 
             if( likeDto.getUserId() != 0L ) {
 
-                newLike.setlUser(userRepository.getReferenceById(likeDto.getUserId()));
+                if( userRepository.findIdbyemailId(currentUser.getUsername()) == likeDto.getUserId()) {
+
+                    newLike.setlUser(userRepository.getReferenceById(likeDto.getUserId()));
+                }
+                else {
+                    throw new LikeServiceException("the user id is different from the logged in user.");
+                }
+
             }
             else {
                 throw new LikeServiceException("user is not found, give correct values ");
@@ -88,14 +96,20 @@ public class LikeServiceImpl implements LikeService {
     }
 
     @Override
-    public boolean removeLike(Likes like) {
+    public boolean removeLike(Likes like, UserDetails currentUser) {
         try {
-            if(likeRepository.findById(like.getId()).isPresent()){
-                likeRepository.deleteById(like.getId());
-                return true;
+            if (userRepository.findIdbyemailId(currentUser.getUsername()) == like.getlUser().getId() ) {
+
+                if(likeRepository.findById(like.getId()).isPresent()){
+                    likeRepository.deleteById(like.getId());
+                    return true;
+                }
+                else{
+                    throw new LikeServiceException("there is no like by the given data, check the given data that was given again...");
+                }
             }
-            else{
-                throw new LikeServiceException("there is no like by the given data, check the given data that was given again...");
+            else {
+                throw new LikeServiceException("the like given does not match with the users login. ");
             }
         } catch (Exception e) {
             throw new LikeServiceException("exception occured while trying to remove like ...");
