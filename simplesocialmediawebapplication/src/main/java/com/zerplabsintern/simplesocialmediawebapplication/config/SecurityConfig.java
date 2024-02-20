@@ -28,6 +28,9 @@ public class SecurityConfig {
     @Autowired
     private CustomUserDetailsServiceImpl customUserDetailsServiceImpl;
 
+    @Autowired
+    private CustomAccessDeniedHandler customAccessDeniedHandler;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
@@ -41,7 +44,12 @@ public class SecurityConfig {
 
             .authenticationProvider(authenticationProvider())
 
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+            
+            .exceptionHandling(exceptionHandling ->
+                exceptionHandling
+                    .authenticationEntryPoint(customAccessDeniedHandler)
+            );
 
             return httpSecurity.build();
 
