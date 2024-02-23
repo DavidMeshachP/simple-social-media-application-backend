@@ -5,7 +5,8 @@ import java.time.ZonedDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.zerplabsintern.simplesocialmediawebapplication.enums.Type;
+import com.zerplabsintern.simplesocialmediawebapplication.enums.LikeForType;
+import com.zerplabsintern.simplesocialmediawebapplication.enums.LikeType;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -39,8 +40,12 @@ public class Likes {
     private Comment lComment;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "like_type")
+    private LikeType likeType;
+
+    @Enumerated(EnumType.STRING)
     @Column(name = "like_for_type")
-    private Type type;
+    private LikeForType likeForType;
 
     @Column(name = "created")
     @CreationTimestamp
@@ -54,12 +59,16 @@ public class Likes {
         
     }
 
-    public Likes(Long id, User lUser, Post lPost, ZonedDateTime createdOn, ZonedDateTime modifiedOn) {
+    public Likes(Long id, User lUser, Post lPost, Comment lComment, LikeType likeType, LikeForType likeForType,
+            ZonedDateTime created, ZonedDateTime modified) {
         this.id = id;
         this.lUser = lUser;
         this.lPost = lPost;
-        this.created = createdOn;
-        this.modified = modifiedOn;
+        this.lComment = lComment;
+        this.likeType = likeType;
+        this.likeForType = likeForType;
+        this.created = created;
+        this.modified = modified;
     }
 
     public Long getId() {
@@ -102,6 +111,44 @@ public class Likes {
         this.modified = modifiedOn;
     }
 
-    
+    public Comment getlComment() {
+        return lComment;
+    }
+
+    public void setlComment(Comment lComment) {
+        this.lComment = lComment;
+    }
+
+    public LikeType getLikeType() {
+        return likeType;
+    }
+
+    public void setLikeType(LikeType likeType) {
+        this.likeType = likeType;
+    }
+
+    public LikeForType getLikeForType() {
+        return likeForType;
+    }
+
+    public void setLikeForType(LikeForType likeForType) {
+        this.likeForType = likeForType;
+    }
+
+    public ZonedDateTime getCreated() {
+        return created;
+    }
+
+    public void setCreated(ZonedDateTime created) {
+        this.created = created;
+    }
+
+    public ZonedDateTime getModified() {
+        return modified;
+    }
+
+    public void setModified(ZonedDateTime modified) {
+        this.modified = modified;
+    }
 
 }

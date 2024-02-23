@@ -1,6 +1,6 @@
 package com.zerplabsintern.simplesocialmediawebapplication.enums;
 
-public enum Type {
+public enum LikeForType {
 
     Post,
     Comment

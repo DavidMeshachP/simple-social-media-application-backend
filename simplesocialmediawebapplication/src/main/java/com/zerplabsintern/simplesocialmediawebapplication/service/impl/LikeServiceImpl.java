@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.zerplabsintern.simplesocialmediawebapplication.dto.LikeDto;
 import com.zerplabsintern.simplesocialmediawebapplication.entity.Likes;
 import com.zerplabsintern.simplesocialmediawebapplication.exception.LikeServiceException;
+import com.zerplabsintern.simplesocialmediawebapplication.repository.CommentRepository;
 import com.zerplabsintern.simplesocialmediawebapplication.repository.LikeRepository;
 import com.zerplabsintern.simplesocialmediawebapplication.repository.PostRepository;
 import com.zerplabsintern.simplesocialmediawebapplication.repository.UserRepository;
@@ -28,6 +29,9 @@ public class LikeServiceImpl implements LikeService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private CommentRepository commentRepository;
 
     @Override
     public LikeDto addLike(LikeDto likeDto, UserDetails currentUser) {
@@ -52,6 +56,22 @@ public class LikeServiceImpl implements LikeService {
             if( likeDto.getPostId() != 0L ) {
 
                 newLike.setlPost(postRepository.findById(likeDto.getPostId()).orElseThrow(() -> new EntityNotFoundException("Post not found")));;
+            }
+            else {
+                throw new LikeServiceException("the given post id is not found, give correct values");
+            }
+
+            if( likeDto.getCommentId() != 0L ) {
+
+                newLike.setlComment(commentRepository.findById(likeDto.getCommentId()).get());
+            }
+            else {
+                throw new LikeServiceException("the given post id is not found, give correct values");
+            }
+
+            if( likeDto.getLikeForType() != null ) {
+
+                newLike.setLikeForType(likeDto.getLikeForType());
             }
             else {
                 throw new LikeServiceException("the given post id is not found, give correct values");
