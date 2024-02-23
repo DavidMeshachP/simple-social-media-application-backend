@@ -5,8 +5,12 @@ import java.time.ZonedDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.zerplabsintern.simplesocialmediawebapplication.enums.Type;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -29,6 +33,14 @@ public class Likes {
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post lPost;
+
+    @ManyToOne
+    @JoinColumn(name = "comment_id")
+    private Comment lComment;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "like_for_type")
+    private Type type;
 
     @Column(name = "created")
     @CreationTimestamp

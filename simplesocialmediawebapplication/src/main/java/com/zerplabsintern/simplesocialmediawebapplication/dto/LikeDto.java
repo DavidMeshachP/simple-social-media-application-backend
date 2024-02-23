@@ -5,17 +5,19 @@ public class LikeDto {
     private long id;
     private long userId;
     private long postId;
+    private long commentId;
 
     public LikeDto () {
 
     }
-
-    public LikeDto(long id, long userId, long postId) {
+    
+    public LikeDto(long id, long userId, long postId, long commentId) {
         this.id = id;
         this.userId = userId;
         this.postId = postId;
+        this.commentId = commentId;
     }
-    
+
     public long getId() {
         return id;
     }
@@ -34,6 +36,13 @@ public class LikeDto {
     public void setPostId(long postId) {
         this.postId = postId;
     }
-    
+
+    public long getCommentId() {
+        return commentId;
+    }
+
+    public void setCommentId(long commentId) {
+        this.commentId = commentId;
+    }
     
 }

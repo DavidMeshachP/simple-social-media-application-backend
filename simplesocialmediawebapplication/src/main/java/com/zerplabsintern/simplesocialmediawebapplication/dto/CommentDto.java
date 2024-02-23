@@ -6,7 +6,11 @@ public class CommentDto {
 
     private Long userId;
 
+    private String type;
+
     private Long postId;
+
+    private Long commentId;
 
     private String comment;
 
@@ -14,10 +18,12 @@ public class CommentDto {
 
     }
 
-    public CommentDto(Long id, Long userId, Long postId, String comment) {
+    public CommentDto(Long id, Long userId, String type, Long postId, Long commentId, String comment) {
         this.id = id;
         this.userId = userId;
+        this.type = type;
         this.postId = postId;
+        this.commentId = commentId;
         this.comment = comment;
     }
 
@@ -53,6 +59,20 @@ public class CommentDto {
         this.comment = comment;
     }
 
-    
+    public Long getCommentId() {
+        return commentId;
+    }
+
+    public void setCommentId(Long commentId) {
+        this.commentId = commentId;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
     
 }
