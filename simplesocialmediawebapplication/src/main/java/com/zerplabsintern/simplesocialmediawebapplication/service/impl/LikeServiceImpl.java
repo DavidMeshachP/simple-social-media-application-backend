@@ -69,12 +69,21 @@ public class LikeServiceImpl implements LikeService {
                 throw new LikeServiceException("the given post id is not found, give correct values");
             }
 
+            if( likeDto.getLikeType() != null ) {
+
+                newLike.setLikeType(likeDto.getLikeType());
+
+            }
+            else {
+                throw new LikeServiceException("the like type is not given, give correct values");
+            }
+
             if( likeDto.getLikeForType() != null ) {
 
                 newLike.setLikeForType(likeDto.getLikeForType());
             }
             else {
-                throw new LikeServiceException("the given post id is not found, give correct values");
+                throw new LikeServiceException("the like for type is not given, give correct values");
             }
 
             likeRepository.save(newLike);
@@ -99,6 +108,9 @@ public class LikeServiceImpl implements LikeService {
                     LikeDto likeDto = new LikeDto();
 
                     likeDto.setId(likes.getId());
+                    likeDto.setCommentId(likes.getlComment().getId());
+                    likeDto.setLikeForType(likes.getLikeForType());
+                    likeDto.setLikeType(likes.getLikeType());
                     likeDto.setPostId(likes.getlPost().getId());
                     likeDto.setUserId(likes.getlUser().getId());
 
